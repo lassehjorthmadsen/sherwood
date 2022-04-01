@@ -2,6 +2,8 @@ Welcome to Saxo’s Developer Portal
 Below are your account details.
 It is recommended that you print them for future reference.
 
+User ID: 16549343
+Password: 205y5if0
 
 APPLICATION
 

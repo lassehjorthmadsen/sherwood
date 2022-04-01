@@ -1,11 +1,101 @@
 library(tidyverse)
 library(httr)
 
+# 24 hour token for simulation account
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiMTU1NWY4MjkxNDQ3NDdlMjk4Y2EyZTA5NGQ5NDM5YzgiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NDg5MDIxNTIiLCJvYWwiOiIxRiJ9.5u821ItMWZ24NDUvIZvpdQLf-flWNQrxDY3ifWaWQQx-wd8QJIBZcw3IhElHwrnBY0vi2pyfSWFH1UTCexhEUA"
+token24 <- paste("Bearer", token24)
 
-eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiN2EzNjkyMjBhNGRjNDQwODkwM2ViZjI4NzcxZmY5YTUiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NDg0OTgxMDQiLCJvYWwiOiIxRiJ9.zakf7U-pb9K17LW1XERrsis4LxXkRnUqYvaWSqxe076QPjcejv2fdEOq1ktO_mO5zCckmbgx-Xrls0BLM2etvg
+# Basic request for balance
+r <-
+  GET(
+    "https://gateway.saxobank.com/sim/openapi/port/v1/balances/me",
+    add_headers(Authorization = token24)
+    )
 
-# copy your app configuration from https://www.developer.saxo/openapi/appmanagement
-app_config <- list(
+# Examine content
+http_status(r)
+
+headers(r)
+content(r)
+str(content(r))
+content(r)$CashBalance
+
+# Balance with keys
+r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/balances",
+         query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+                      ClientKey = "mM3WZ5aMVM|2gm5fOyrLkw=="),
+         add_headers(Authorization = token24))
+
+http_status(r)
+content(r)$CashBalance
+
+# User details
+r <-
+  GET(
+    "https://gateway.saxobank.com/sim/openapi/port/v1/users/me",
+    add_headers(Authorization = token24)
+  )
+
+content(r)
+
+# available features
+r <- GET("https://gateway.saxobank.com/sim/openapi/root/v1/features/availability",
+         add_headers(Authorization = token24))
+content(r)
+content(r)[[1]]$Feature
+
+# instrument prices
+r <- GET("https://gateway.saxobank.com/sim/openapi/ref/V1/instruments/",
+         query = list(top = "30", Keywords = "Apple", AssetTypes = "Stock"),
+         add_headers(Authorization = token24))
+
+
+http_status(r)
+content(r) %>% str()
+content(r)$Data %>% str()
+
+df <- content(r)$Data %>%
+  map_dfr(as_tibble) %>%
+  mutate(TradableAs = map_chr(TradableAs, paste, collapse = ";"))
+
+df
+
+# Option prices
+
+
+# Fx prices, from here: https://www.developer.saxo/openapi/tutorial#/7
+r <- GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
+         query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+                      Uics = "2047,1311,2046,17749,16",
+                      AssetType = "FxSpot",
+                      Amount = "100000",
+                      FieldGroups = "DisplayAndFormat",
+                      Quote = TRUE),
+         add_headers(Authorization = token24)
+         )
+
+http_status(r)
+content(r)$Data %>% str()
+
+df <- content(r)$Data %>%
+  map_dfr(~ map_dfc(.x, as_tibble)) %>%
+  select(Uic = value...21, Symbol, Decimals, Amount, Bid, Ask, LastUpdated = value...8) %>%
+  mutate(LastUpdated = lubridate::as_datetime(LastUpdated)) %>%
+  arrange(Uic)
+
+df
+
+# Keys
+r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/accounts/me",
+         add_headers(Authorization = token24))
+
+http_status(r)
+content(r)$Data[[1]]$AccountKey
+content(r)$Data[[1]]$ClientKey
+
+
+# App object
+{
   "AppName": "sherwood",
   "AppKey": "6a4e7a986bb349149689955cd9828770",
   "AuthorizationEndpoint": "https://sim.logonvalidation.net/authorize",
@@ -16,34 +106,10 @@ app_config <- list(
     "http://www.lassehjorthmadsen.dk/"
   ],
   "AppSecret": "85055ce86c0848ebad36a2332557f3f7"
-)
-
-# Python snip
-params = {
-  "response_type": "code",
-  "client_id": app_config["AppKey"],
-  "state": state,
-  "redirect_uri": app_config["RedirectUrls"][0],
-  "client_secret": app_config["AppSecret"],
 }
 
-auth_url = requests.Request(
-  "GET", url=app_config["AuthorizationEndpoint"], params=params
-).prepare()
 
-# in R?
-params <- c(
-  "response_type" = "code",
-  "client_id" = "6a4e7a986bb349149689955cd9828770",
-  # "state": state,
-  "redirect_uri" = "http://www.lassehjorthmadsen.dk/",
-  "client_secret"= "85055ce86c0848ebad36a2332557f3f7"
-)
-
-# The api responds
-r <- POST("https://gateway.saxobank.com/sim/openapi/port/v1/users/me", params)
-http_status(r)
-
+# How to use parameters?
 params = '{
   "response_type": "code",
   "client_id": "6a4e7a986bb349149689955cd9828770",
@@ -55,9 +121,3 @@ r <- POST("https://gateway.saxobank.com/sim/openapi/port/v1/users/me",
           body = params, encode = "raw")
 
 http_status(r)
-
-# Examine response
-r
-headers(r)
-content(r)
-str(content(r))
