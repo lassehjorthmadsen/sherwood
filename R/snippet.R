@@ -2,7 +2,7 @@ library(tidyverse)
 library(httr)
 
 # 24 hour token for simulation account
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiMTU1NWY4MjkxNDQ3NDdlMjk4Y2EyZTA5NGQ5NDM5YzgiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NDg5MDIxNTIiLCJvYWwiOiIxRiJ9.5u821ItMWZ24NDUvIZvpdQLf-flWNQrxDY3ifWaWQQx-wd8QJIBZcw3IhElHwrnBY0vi2pyfSWFH1UTCexhEUA"
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiZGVkOGNhOTNjOThiNDM3ZjhhZTNmNWIyYTgxOThmZTgiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NDk0NTExOTIiLCJvYWwiOiIxRiJ9.026_QpW0A4ohNFz8LUyWvXs9XbyJE5-kmoYOEDT6R8RqoaUk3QMgZphPAIfpXtbZeDDGQl-CYsKjIItaf04gEw"
 token24 <- paste("Bearer", token24)
 
 # Basic request for balance
@@ -30,13 +30,18 @@ http_status(r)
 content(r)$CashBalance
 
 # User details
-r <-
-  GET(
-    "https://gateway.saxobank.com/sim/openapi/port/v1/users/me",
-    add_headers(Authorization = token24)
-  )
+r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/users/me",
+         add_headers(Authorization = token24))
 
+http_status(r)
 content(r)
+
+r <- GET("https://gateway.saxobank.com/sim/openapi/root/v1/user",
+         add_headers(Authorization = token24))
+
+http_status(r)
+content(r)
+
 
 # available features
 r <- GET("https://gateway.saxobank.com/sim/openapi/root/v1/features/availability",
@@ -60,7 +65,51 @@ df <- content(r)$Data %>%
 
 df
 
+# Test POST reguest
+r <- POST("https://gateway.saxobank.com/sim/openapi/root/v1/diagnostics/post")
+http_status(r)
+
+# test subscriptions
+r <- POST("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/subscriptions")
+http_status(r)
+
+# subscriptions
+body <- list(Arguments =
+               list("Uics" = "2047",
+                 "AssetType" = "FxSpot"),
+  ContextId = "explorer_1649365841278",
+  ReferenceId = "C_419"
+)
+
+body <- jsonlite::toJSON(body, auto_unbox = T)
+
+r <- POST("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/subscriptions", body = body, encode = "raw")
+http_status(r)
+
+
+
 # Option prices
+
+# 1) setup subscription
+
+body <- list(
+   Arguments = list(
+     AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+     AssetType = "StockIndexOption",
+     Identifier = 18,
+     MaxStrikesPerExpiry = 3
+   ),
+   ContextId = "20220331032319399",
+   ReferenceId = "C0101093"
+)
+
+body <- jsonlite::toJSON(body, auto_unbox = T)
+
+r <- POST("https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions", body = body, encode = "raw")
+
+http_status(r)
+content(r) %>% str()
+
 
 
 # Fx prices, from here: https://www.developer.saxo/openapi/tutorial#/7
