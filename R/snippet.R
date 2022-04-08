@@ -6,11 +6,8 @@ token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZD
 token24 <- paste("Bearer", token24)
 
 # Basic request for balance
-r <-
-  GET(
-    "https://gateway.saxobank.com/sim/openapi/port/v1/balances/me",
-    add_headers(Authorization = token24)
-    )
+r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/balances/me",
+          add_headers(Authorization = token24))
 
 # Examine content
 http_status(r)
@@ -48,6 +45,7 @@ r <- GET("https://gateway.saxobank.com/sim/openapi/root/v1/features/availability
          add_headers(Authorization = token24))
 content(r)
 content(r)[[1]]$Feature
+
 
 # instrument prices
 r <- GET("https://gateway.saxobank.com/sim/openapi/ref/V1/instruments/",
@@ -88,28 +86,40 @@ http_status(r)
 
 
 
-# Option prices
+# Try to get stock option prices (InfoPrices, https://www.developer.saxo/openapi/learn/pricing)
 
-# 1) setup subscription
-
-body <- list(
-   Arguments = list(
-     AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
-     AssetType = "StockIndexOption",
-     Identifier = 18,
-     MaxStrikesPerExpiry = 3
-   ),
-   ContextId = "20220331032319399",
-   ReferenceId = "C0101093"
-)
-
-body <- jsonlite::toJSON(body, auto_unbox = T)
-
-r <- POST("https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions", body = body, encode = "raw")
+# First, get all StockOption types
+r <- GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
+         query = list(AssetTypes ="StockOption"),
+         add_headers(Authorization = token24))
 
 http_status(r)
-content(r) %>% str()
+df <- content(r)$Data %>% map_dfr(as_tibble)
+df
 
+Uics<- df %>%
+  slice_head(n = 3) %>%
+  pull(Identifier) %>%
+  paste(collapse = ",")
+
+# Then, try to get af few prices for those:
+r <- GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
+         query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+                      Uics = Uics,
+                      AssetType = "StockOption",
+                      Amount = "100000",
+                      FieldGroups = "DisplayAndFormat",
+                      Quote = TRUE),
+         add_headers(Authorization = token24)
+)
+
+http_status(r)
+
+prices <- content(r)$Data %>%
+  map_dfr(~ map_dfc(.x, as_tibble)) %>%
+  select(Uic = value...21, Symbol, Decimals, Amount, Bid, Ask, LastUpdated = value...8) %>%
+  mutate(LastUpdated = lubridate::as_datetime(LastUpdated)) %>%
+  arrange(Uic)
 
 
 # Fx prices, from here: https://www.developer.saxo/openapi/tutorial#/7
@@ -143,30 +153,20 @@ content(r)$Data[[1]]$AccountKey
 content(r)$Data[[1]]$ClientKey
 
 
-# App object
-{
-  "AppName": "sherwood",
-  "AppKey": "6a4e7a986bb349149689955cd9828770",
-  "AuthorizationEndpoint": "https://sim.logonvalidation.net/authorize",
-  "TokenEndpoint": "https://sim.logonvalidation.net/token",
-  "GrantType": "Code",
-  "OpenApiBaseUrl": "https://gateway.saxobank.com/sim/openapi/",
-  "RedirectUrls": [
-    "http://www.lassehjorthmadsen.dk/"
-  ],
-  "AppSecret": "85055ce86c0848ebad36a2332557f3f7"
-}
+# Setup subscription -- doesn't work, only for live env?
+body <- list(
+  Arguments = list(
+    AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+    AssetType = "StockIndexOption",
+    Identifier = 18,
+    MaxStrikesPerExpiry = 3
+  ),
+  ContextId = "20220331032319399",
+  ReferenceId = "C0101093"
+)
 
+body <- jsonlite::toJSON(body, auto_unbox = T)
 
-# How to use parameters?
-params = '{
-  "response_type": "code",
-  "client_id": "6a4e7a986bb349149689955cd9828770",
-  "redirect_uri": "http://www.lassehjorthmadsen.dk/",
-  "client_secret": "85055ce86c0848ebad36a2332557f3f7",
-}'
+r <- POST("https://gateway.saxobank.com/sim/openapi/trade/v1/optionschain/subscriptions", body = body, encode = "raw")
 
-r <- POST("https://gateway.saxobank.com/sim/openapi/port/v1/users/me",
-          body = params, encode = "raw")
-
-http_status(r)
+content(r) %>% str()
