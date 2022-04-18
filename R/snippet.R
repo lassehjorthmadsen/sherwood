@@ -2,7 +2,8 @@ library(tidyverse)
 library(httr)
 
 # 24 hour token for simulation account
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiZGVkOGNhOTNjOThiNDM3ZjhhZTNmNWIyYTgxOThmZTgiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NDk0NTExOTIiLCJvYWwiOiIxRiJ9.026_QpW0A4ohNFz8LUyWvXs9XbyJE5-kmoYOEDT6R8RqoaUk3QMgZphPAIfpXtbZeDDGQl-CYsKjIItaf04gEw"
+# https://www.developer.saxo/openapi/token/current#/lst/1650285935777
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiZWNkMGIxY2U2YTIyNDU4MDllNjc4Zjg2YzczNjk0MzEiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTAzNzIzMzgiLCJvYWwiOiIxRiJ9.FZoC9tv8wMLx5KnHrbgAdKCPkHoJZ-CK4nP-zRFhKZOEBZhbkwm8MDxg1_fBOlR_KUs4LUSWlSVKiQ7nfMdlzg"
 token24 <- paste("Bearer", token24)
 
 # Basic request for balance
@@ -86,40 +87,139 @@ http_status(r)
 
 
 
-# Try to get stock option prices (InfoPrices, https://www.developer.saxo/openapi/learn/pricing)
 
+
+# Try to get stock option prices (InfoPrices, https://www.developer.saxo/openapi/learn/pricing)
 # First, get all StockOption types
 r <- GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
-         query = list(AssetTypes ="StockOption"),
+         query = list(AssetTypes = "StockOption"),
          add_headers(Authorization = token24))
 
 http_status(r)
 df <- content(r)$Data %>% map_dfr(as_tibble)
 df
 
-Uics<- df %>%
-  slice_head(n = 3) %>%
+Uics <- df %>%
+  #slice_head(n = 3) %>%
   pull(Identifier) %>%
   paste(collapse = ",")
 
-# Then, try to get af few prices for those:
+# GET THIS TO WORK
+# Then, try to get a few prices for those:
 r <- GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
          query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
                       Uics = Uics,
                       AssetType = "StockOption",
-                      Amount = "100000",
+                      Amount = "1",
+                      FieldGroups = "DisplayAndFormat",
+                      Quote = TRUE,
+                      PutCall = "Call"), # Required?),
+         add_headers(Authorization = token24)
+)
+
+http_status(r)
+content(r)$Data
+
+
+# The above seems to work for stocks, like this:
+r <- GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
+         query = list(AssetTypes = "Stock"), # Stock
+         add_headers(Authorization = token24))
+
+http_status(r)
+df <- content(r)$Data %>% map_dfr(as_tibble)
+df
+
+Uics <- df %>%
+  #slice_head(n = 3) %>%
+  pull(Identifier) %>%
+  paste(collapse = ",")
+
+r <- GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
+         query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+                      Uics = Uics,
+                      AssetType = "Stock", # Stock
+                      Amount = "1",
                       FieldGroups = "DisplayAndFormat",
                       Quote = TRUE),
          add_headers(Authorization = token24)
 )
 
 http_status(r)
+content(r)$Data
+
+content(r)$Data %>%
+  map_dfr(~ map_dfc(.x, as_tibble)) %>%
+  view("stocks")
+
+# This works too, for FX:
+r <- GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
+         query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+                      Uics = "21,42,10000",
+                      AssetType = "FXSpot",
+                      Amount = "100000",
+                      FieldGroups = "Quote",
+                      Quote = TRUE),
+         add_headers(Authorization = token24)
+         )
+
+http_status(r)
+content(r)$Data
 
 prices <- content(r)$Data %>%
   map_dfr(~ map_dfc(.x, as_tibble)) %>%
   select(Uic = value...21, Symbol, Decimals, Amount, Bid, Ask, LastUpdated = value...8) %>%
   mutate(LastUpdated = lubridate::as_datetime(LastUpdated)) %>%
   arrange(Uic)
+
+prices %>% view("FXSpot")
+
+# This also returns an empty list. All parameter example from
+# https://www.developer.saxo/openapi/referencedocs/trade/v1/infoprices/getinfopricelistasync/2eaaceb6373a7eff36c5f04f345cabe0
+
+r <-
+  GET(
+    "https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
+    query = list(
+      Uics = "22,23",
+      AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+      AssetType = "FuturesOption",
+      # Amount = "45182985752.759308",
+      # ForwardDate = "2021-09-17T20:42:25.610734Z",
+      # ExpiryDate = "2022-08-05T14:16:28.445831Z",
+      # StrikePrice = "-6.3319863291243844E+22",
+      # OrderAskPrice = "-3.3795401359503469E+17",
+      # OrderBidPrice = "-6.6779484960120688E+21",
+      # LowerBarrier = "4.7868170226202995E+28",
+      # UpperBarrier = "-5.6102223519559008E+17",
+      PutCall = "Put",
+      FieldGroups = "PriceInfo",
+      # AmountType = "CashAmount",
+      # ForwardDateNearLeg = "2021-05-28T10:49:35.815166Z",
+      # ForwardDateFarLeg = "2022-01-01T12:40:08.973058Z",
+      ToOpenClose = "Undefined",
+      QuoteCurrency = TRUE
+    ),
+    add_headers(Authorization = token24)
+  )
+
+http_status(r)  # OK, but ...
+content(r)$Data # ... empty
+
+# Tesla:
+r <- GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices",
+         query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
+                      Uic = "47556",
+                      AssetType = "Stock"),
+         add_headers(Authorization = token24)
+)
+
+http_status(r)
+content(r) %>% map(as_tibble)
+content(r)[1]
+
+
+
 
 
 # Fx prices, from here: https://www.developer.saxo/openapi/tutorial#/7
