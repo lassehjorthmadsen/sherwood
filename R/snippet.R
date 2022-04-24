@@ -3,43 +3,12 @@ library(httr)
 
 # 24 hour token for simulation account
 # https://www.developer.saxo/openapi/token/current#/lst/1650285935777
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiZWNkMGIxY2U2YTIyNDU4MDllNjc4Zjg2YzczNjk0MzEiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTAzNzIzMzgiLCJvYWwiOiIxRiJ9.FZoC9tv8wMLx5KnHrbgAdKCPkHoJZ-CK4nP-zRFhKZOEBZhbkwm8MDxg1_fBOlR_KUs4LUSWlSVKiQ7nfMdlzg"
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiNzkzNTM2OGEzMzc0NGYxMjllYTE4NzUxZDFhZWMyNzgiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTA4NzM1ODEiLCJvYWwiOiIxRiJ9.B1TSVo6Lq4YznklMfVZXzcClmA0mUaqDXeKjJlxUH10eQuTtM_usNdGTiO0GYewa7krLXRN0HitvA6vln-xh4A"
 token24 <- paste("Bearer", token24)
 
 # Basic request for balance
 r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/balances/me",
-          add_headers(Authorization = token24))
-
-# Examine content
-http_status(r)
-
-headers(r)
-content(r)
-str(content(r))
-content(r)$CashBalance
-
-# Balance with keys
-r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/balances",
-         query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
-                      ClientKey = "mM3WZ5aMVM|2gm5fOyrLkw=="),
          add_headers(Authorization = token24))
-
-http_status(r)
-content(r)$CashBalance
-
-# User details
-r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/users/me",
-         add_headers(Authorization = token24))
-
-http_status(r)
-content(r)
-
-r <- GET("https://gateway.saxobank.com/sim/openapi/root/v1/user",
-         add_headers(Authorization = token24))
-
-http_status(r)
-content(r)
-
 
 # available features
 r <- GET("https://gateway.saxobank.com/sim/openapi/root/v1/features/availability",
@@ -47,15 +16,12 @@ r <- GET("https://gateway.saxobank.com/sim/openapi/root/v1/features/availability
 content(r)
 content(r)[[1]]$Feature
 
-
 # instrument prices
 r <- GET("https://gateway.saxobank.com/sim/openapi/ref/V1/instruments/",
          query = list(top = "30", Keywords = "Apple", AssetTypes = "Stock"),
          add_headers(Authorization = token24))
 
-
 http_status(r)
-content(r) %>% str()
 content(r)$Data %>% str()
 
 df <- content(r)$Data %>%
@@ -84,9 +50,6 @@ body <- jsonlite::toJSON(body, auto_unbox = T)
 
 r <- POST("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/subscriptions", body = body, encode = "raw")
 http_status(r)
-
-
-
 
 
 # Try to get stock option prices (InfoPrices, https://www.developer.saxo/openapi/learn/pricing)
@@ -119,7 +82,6 @@ r <- GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
 
 http_status(r)
 content(r)$Data
-
 
 # The above seems to work for stocks, like this:
 r <- GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
@@ -219,9 +181,6 @@ content(r) %>% map(as_tibble)
 content(r)[1]
 
 
-
-
-
 # Fx prices, from here: https://www.developer.saxo/openapi/tutorial#/7
 r <- GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
          query = list(AccountKey = "mM3WZ5aMVM|2gm5fOyrLkw==",
@@ -243,14 +202,6 @@ df <- content(r)$Data %>%
   arrange(Uic)
 
 df
-
-# Keys
-r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/accounts/me",
-         add_headers(Authorization = token24))
-
-http_status(r)
-content(r)$Data[[1]]$AccountKey
-content(r)$Data[[1]]$ClientKey
 
 
 # Setup subscription -- doesn't work, only for live env?
