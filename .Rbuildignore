@@ -2,5 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^data-raw$
-snippet.R
-tutorial.R
+R/snippets.R
+R/tutorial.R
+R/algo.R
