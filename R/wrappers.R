@@ -1,5 +1,30 @@
 utils::globalVariables("where")
 
+#' Convert HTTP response to dataframe
+#'
+#' @param response A response object from {httr}
+#' @param remove_constant_cols Logical. Should columns with constant values be removed? Defaults to TRUE.
+#'
+#' @return Tibble with response content
+#' @export
+#'
+response_df <- function(response, remove_constant_cols = TRUE) {
+
+  df <- response %>%
+    httr::content(as = "text") %>%
+    jsonlite::fromJSON(flatten = T) %>%
+    as.data.frame() %>%
+    dplyr::as_tibble() %>%
+    dplyr::mutate(dplyr::across(dplyr::ends_with("LastUpdated"), lubridate::as_datetime))
+
+  if (remove_constant_cols) {
+    df <- df %>% dplyr::select(where(~ dplyr::n_distinct(.) > 1))
+  }
+
+  df
+}
+
+
 #' Get stock names and identifiers
 #'
 #' @param token character
@@ -8,19 +33,17 @@ utils::globalVariables("where")
 #' @export
 #'
 get_cse_stocks <- function(token) {
-  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments?",
+  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
       query = list(ExchangeId = "CSE",
                    AssetTypes = "Stock"),
       httr::add_headers(Authorization = token)
     )
 
-  stocks <- r %>%
-    httr::content(as = "text") %>%
-    jsonlite::fromJSON(flatten = T) %>%
-    as.data.frame() %>%
-    dplyr::as_tibble() %>%
-    dplyr::select(where( ~ dplyr::n_distinct(.) > 1))
+  if (httr::http_type(r) != "application/json") {
+    stop("API did not return json", call. = FALSE)
+  }
 
+  stocks <- response_df(r)
   stocks
 }
 
@@ -45,12 +68,7 @@ get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000) {
            httr::add_headers(Authorization = token)
   )
 
-  prices <- r %>%
-    httr::content(as = "text") %>%
-    jsonlite::fromJSON(flatten = T) %>%
-    as.data.frame() %>%
-    dplyr::as_tibble()
-
+  prices <- response_df(r)
   prices
 }
 
@@ -72,13 +90,7 @@ get_info_detail <- function(token, uics, asset_type = "Stock") {
       httr::add_headers(Authorization = token)
     )
 
-  info <- r %>%
-    httr::content(as = "text") %>%
-    jsonlite::fromJSON(flatten = T) %>%
-    as.data.frame() %>%
-    dplyr::as_tibble() %>%
-    dplyr::select(where( ~ dplyr::n_distinct(.) > 1))
-
+  info <- response_df(r)
   info
 }
 
