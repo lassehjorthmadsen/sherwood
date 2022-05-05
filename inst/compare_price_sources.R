@@ -9,7 +9,7 @@ devtools::load_all()
 
 # 24 hour token for simulation account
 # https://www.developer.saxo/openapi/token/current#/lst/1650285935777
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiMzg3MTY2ZTA1ZTFiNDJhYjg5MWM1MWQ5ZWRkZGU4ZWQiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTE3MzY4MDYiLCJvYWwiOiIxRiJ9.Elfir5XXdxqIa1_HoMsFcoqKji-yPrxkYGMtM_2eEIbyGOMWDAMfTCByFYo_CQWziVIlriAxrvbiIR1Iscskjg"
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiOTBhYjVkM2U3NjIxNDg4ZThlNTczZDVhYWVjYzUxNmIiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTE4NDYwMjEiLCJvYWwiOiIxRiJ9.-E5ACsgxFrnySWu7En-N0jkoY6Z8J1vC_C_KnGMxIj6INHBkeTxTVKlyudRwM4dFx6hbAmkgQaNL723juTpOjg"
 token24 <- paste("Bearer", token24)
 
 cse <- get_cse_stocks(token24)
@@ -42,6 +42,13 @@ yahoo_prices_latest <- yahoo_prices %>%
   slice_max(order_by = date, n = 1) %>%
   ungroup() %>%
   filter(metric == "Open")
+
+quotes <- getQuote(yahoo_symbols)
+
+getQuote(yahoo_symbols, what = yahooQF(c("Market Capitalization", "Earnings/Share",
+                                "P/E Ratio", "Book Value", "Last")))
+
+getQuote(yahoo_symbols, what = yahooQF(c("P/E Ratio")))
 
 # Join data from Saxo Bank with Yahoo data
 prc <- prc %>%
