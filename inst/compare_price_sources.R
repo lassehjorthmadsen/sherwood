@@ -6,18 +6,35 @@ library(tidyverse)
 library(httr)
 library(quantmod)
 devtools::load_all()
+theme_set(theme_minimal())
 
 # 24 hour token for simulation account
 # https://www.developer.saxo/openapi/token/current#/lst/1650285935777
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiOTBhYjVkM2U3NjIxNDg4ZThlNTczZDVhYWVjYzUxNmIiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTE4NDYwMjEiLCJvYWwiOiIxRiJ9.-E5ACsgxFrnySWu7En-N0jkoY6Z8J1vC_C_KnGMxIj6INHBkeTxTVKlyudRwM4dFx6hbAmkgQaNL723juTpOjg"
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiYjlkZmQ0ZDc4MGY1NDk4Yjg0ODkxN2Y4NjVlZmFkYTAiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTIwNDA4NzkiLCJvYWwiOiIxRiJ9._Nyavz0VQferi5v4txai-GFeoyhoLIMgAI5PxodOVF1emJXCUNuoqDvTgKkaq8uAKebtKjGPJPhuqHqN3-Lq5A"
 token24 <- paste("Bearer", token24)
 
-cse <- get_cse_stocks(token24)
-uics <- paste(cse$Data.Identifier, collapse = ",")
-prc <- get_info_prices(token = token24, uics = uics)
+exc <- get_exchanges(token = token24) # All Exchanges
+
+# All stocks from all exchanges (max 1000 per exchange)
+stc <- exc$Data.ExchangeId %>%
+  map(get_stocks, token = token24) %>%
+  compact() %>%
+  bind_rows()
+
+# All stocks from Copenhagen Stock Exchange, CSE
+# cse <- get_stocks(token24, exchange_id = "CSE")
+prc_cse <- get_info_prices(token, paste(cse$Data.Identifier, collapse = ","))
+
+# Smaller chunks
+uic_split <- split(stc$Data.Identifier,
+                   ceiling(seq_along(stc$Data.Identifier) / 100)) %>%
+  map(paste, collapse = ",")
+
+# get info prices
+prc <- uic_split %>% map_dfr(get_info_prices, token = token24)
 
 # Yahoo Finance symbols (is there a more automatic ways to map those?)
-yahoo_symbols <- cse$Data.Symbol %>%
+yahoo_symbols_cse <- cse$Data.Symbol %>%
   str_replace(":xcse", ".CO") %>%
   str_replace("a.", "-A.") %>%
   str_replace("b.", "-B.") %>%
@@ -26,48 +43,48 @@ yahoo_symbols <- cse$Data.Symbol %>%
   str_replace("ATLA", "ATLA-DKK")
 
 # prices from Yahoo
-yahoo_prices <- yahoo_symbols %>%
-  set_names() %>%
-  map(getSymbols, from = "2022-04-01", auto.assign = FALSE) %>% # For some reason you can't get just one day
-  map(as.data.frame) %>%
-  map(rownames_to_column, "date") %>%
-  map(as_tibble) %>%
-  map_dfr(pivot_longer, -date)
+standard_yahoo <- getQuote(yahoo_symbols_cse) %>% select(-`Trade Time`)
+extra_yahoo <- getQuote(yahoo_symbols_cse,
+                        what = yahooQF(
+                          c(
+                            "Name",
+                            "Quote Soucee Name",
+                            "Exchange",
+                            "P/E Ratio",
+                            "High",
+                            "Bid",
+                            "Ask"
+                          )
+                        ))
 
-yahoo_prices_latest <- yahoo_prices %>%
-  separate(name, into = c("company", "metric"), sep = "\\.CO\\.") %>%
-  mutate(company = paste0(company, ".CO")) %>%
-  mutate(date = as.Date(date)) %>%
-  group_by(company) %>%
-  slice_max(order_by = date, n = 1) %>%
-  ungroup() %>%
-  filter(metric == "Open")
+yahoo_prices_cse <- bind_cols(standard_yahoo, extra_yahoo) %>% as_tibble()
 
-quotes <- getQuote(yahoo_symbols)
-
-getQuote(yahoo_symbols, what = yahooQF(c("Market Capitalization", "Earnings/Share",
-                                "P/E Ratio", "Book Value", "Last")))
-
-getQuote(yahoo_symbols, what = yahooQF(c("P/E Ratio")))
 
 # Join data from Saxo Bank with Yahoo data
-prc <- prc %>%
-  mutate(yahoo_symbol = yahoo_symbols) %>%
-  left_join(yahoo_prices_latest, by = c("yahoo_symbol" = "company"))
+prc_cse <- prc_cse %>%
+  mutate(yahoo_symbol = yahoo_symbols_cse) %>%
+  left_join(yahoo_prices_cse, by = c("yahoo_symbol" = "Symbol"))
 
-# Plot
+# Plots
 prc %>%
   select(company = Data.DisplayAndFormat.Description,
          saxo_ask = Data.Quote.Ask,
          saxo_bid = Data.Quote.Bid,
          saxo_mid = Data.Quote.Mid,
-         yahoo_open = value) %>%
+         yahoo_open = Open) %>%
   mutate(company = fct_reorder(company, saxo_mid)) %>%
   pivot_longer(-company, names_to = "price_source") %>%
   ggplot(aes(y = company, x = value, color = price_source, group = price_source)) +
   geom_point() +
   geom_line() +
   scale_x_log10()
+
+prc %>%
+  ggplot(aes(x = Volume, y = `P/E Ratio`, label = Name)) +
+  geom_point() +
+  ggrepel::geom_text_repel(max.overlaps = 20, size = 3, color = gray(0.5)) +
+  scale_x_log10() +
+  scale_y_log10()
 
 # View values
 prc %>%

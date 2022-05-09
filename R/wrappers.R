@@ -17,12 +17,36 @@ response_df <- function(response, remove_constant_cols = TRUE) {
     dplyr::as_tibble() %>%
     dplyr::mutate(dplyr::across(dplyr::ends_with("LastUpdated"), lubridate::as_datetime))
 
-  if (remove_constant_cols) {
+  if (remove_constant_cols & nrow(df) > 1) {
     df <- df %>% dplyr::select(where(~ dplyr::n_distinct(.) > 1))
   }
 
   df
 }
+
+
+#' Get exchange names and data
+#'
+#' @param token character
+#'
+#' @return tibble
+#' @export
+#'
+get_exchanges <- function(token) {
+
+  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges",
+      query = list(`$top` = 1000),
+      httr::add_headers(Authorization = token)
+    )
+
+  if (httr::http_type(r) != "application/json") {
+    stop("API did not return json", call. = FALSE)
+  }
+
+  exchanges <- response_df(r)
+  exchanges
+}
+
 
 
 #' Get stock names and identifiers
@@ -32,10 +56,12 @@ response_df <- function(response, remove_constant_cols = TRUE) {
 #' @return tibble
 #' @export
 #'
-get_cse_stocks <- function(token) {
+get_stocks <- function(token, exchange_id = "CSE") {
+
   r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
-      query = list(ExchangeId = "CSE",
-                   AssetTypes = "Stock"),
+      query = list(ExchangeId = exchange_id,
+                   AssetTypes = "Stock",
+                   `$top` = 1000),
       httr::add_headers(Authorization = token)
     )
 
