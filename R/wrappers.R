@@ -48,7 +48,6 @@ get_exchanges <- function(token) {
 }
 
 
-
 #' Get stock names and identifiers
 #'
 #' @param token character
@@ -57,7 +56,6 @@ get_exchanges <- function(token) {
 #' @export
 #'
 get_stocks <- function(token, exchange_id = "CSE") {
-
   r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
       query = list(ExchangeId = exchange_id,
                    AssetTypes = "Stock",
@@ -90,7 +88,7 @@ get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000) {
            query = list(Uics = uics,
                         AssetType = asset_type,
                         Amount = amount,
-                        FieldGroups = "DisplayAndFormat,Quote"),
+                        FieldGroups = "DisplayAndFormat, Quote"),
            httr::add_headers(Authorization = token)
   )
 
