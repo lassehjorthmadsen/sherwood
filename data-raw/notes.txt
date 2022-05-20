@@ -12,7 +12,10 @@ To-do
 Status
 
 Okay, 1) gives problems (but remember to try information in notes below.)
+
 Let's do the same but just for stocks (using price/earning ratios), hoping to figure out along the way how to do it for options as well.
+
+STOCK PART DONE, NEEDED TO CONNECT TO LIVE ACCOUNT.
 
 Did tutorial, very informative.
 

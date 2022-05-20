@@ -10,21 +10,21 @@ theme_set(theme_minimal())
 
 # 24 hour token for simulation account
 # https://www.developer.saxo/openapi/token/current#/lst/1650285935777
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiYTRjYmRiYTZkOTI3NDIxNDliMTQ3YWI4YzlkYzNmYWIiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTIyNjQ3MDAiLCJvYWwiOiIxRiJ9.kYsKlrTJf3139L7rk0c5MGNHx9UmXfHLbsDmgNNPj31NN1b3G-3Vms6MAbG0yM7Wd4CNk_hWgRqvu-Fd-M-oWQ"
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiZWMxNGJmNTdiZjczNGJhMWIyMmY2M2ViNGI4ZDk1ODciLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTMxMzcxNDAiLCJvYWwiOiIxRiJ9.UDO2G61nrE7cQ8pn48nBhTyIxzWv3p9IuNsh0hUV51Azj2eVOt_Mg0L5bjJ06ZZtdNanlqQY2MXALlgXkcExXw"
 token24 <- paste("Bearer", token24)
 
 exc <- get_exchanges(token = token24) # All Exchanges
 
 # All stocks from all exchanges (max 1000 per exchange)
 stc <- exc$Data.ExchangeId[c(165,188)] %>%
-  map(get_stocks, token = token24) %>%
+  map(get_assets, token = token24) %>%
   compact() %>%
   bind_rows() %>%
   filter(!is.na(Data.Identifier))
 
 # All stocks from Copenhagen Stock Exchange, CSE
- stc_cse <- get_stocks(token24, exchange_id = "CSE")
- prc_cse <- get_info_prices(token, paste(stc_cse$Data.Identifier, collapse = ","))
+ stc_cse <- get_assets(token24, exchange_id = "CSE", asset_type = "Stocks")
+ prc_cse <- get_info_prices(token24, paste(stc_cse$Data.Identifier, collapse = ","))
 
 # uics split in smaller chunks
 uic_split <- split(stc$Data.Identifier,

@@ -51,14 +51,16 @@ get_exchanges <- function(token) {
 #' Get stock names and identifiers
 #'
 #' @param token character
+#' @param exchange_id character
+#' @param asset_type character
 #'
 #' @return tibble
 #' @export
 #'
-get_stocks <- function(token, exchange_id = "CSE") {
+get_assets <- function(token, exchange_id = "CSE", asset_type = "Stock", ...) {
   r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
       query = list(ExchangeId = exchange_id,
-                   AssetTypes = "Stock",
+                   AssetTypes = asset_type,
                    `$top` = 1000),
       httr::add_headers(Authorization = token)
     )
@@ -67,7 +69,7 @@ get_stocks <- function(token, exchange_id = "CSE") {
     stop("API did not return json", call. = FALSE)
   }
 
-  stocks <- response_df(r)
+  stocks <- response_df(r, ...)
   stocks
 }
 
@@ -83,7 +85,7 @@ get_stocks <- function(token, exchange_id = "CSE") {
 #' tibble with instruments (e.g. stocks)
 #' @export
 #'
-get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000) {
+get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000, ...) {
   r <- httr::GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
            query = list(Uics = uics,
                         AssetType = asset_type,
@@ -92,7 +94,7 @@ get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000) {
            httr::add_headers(Authorization = token)
   )
 
-  prices <- response_df(r)
+  prices <- response_df(r, ...)
   prices
 }
 
