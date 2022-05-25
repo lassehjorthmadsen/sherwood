@@ -29,6 +29,13 @@ Notice that each instrument has an Identifier. For everything but options, this 
 The OpenAPI does not take instrument names or symbols as identifiers. Instead, instruments are identified by a unique combination of UIC (Universal Instrument Code) and AssetType. Pulling this information for the specific instrument you are interested in is key to continue into other operations such as sending orders, building charts, creating reports, etc.
 
 
+Most instruments are uniquely identified by the combination of UIC and AssetType. For option instruments additional parameters are introduced. See the section on options for details.
+
+Option instruments, in addition to their UIC and AssetType, are also identified by whether the contract is a Put or Call and, depending on the type of option, a Strike or Barrier.
+
+An underlying instrument refers to the relationship between a future and an option on the future, between a stock and a cfd on that stock, etc. Each side of this bidirectional relationship is found in the RelatedInstruments of the other when retrieving instrument details. As a cfd on a stock and a stock will share UIC, this is mostly relevant when working with options. When using the ContractOptionsSpace endpoint, the underlying for each option is specified directly. Needing the uic of underlying contract for an option (in order to make a price subscription, and determine which strikes are in in the money) is a very common scenario.
+
+
 APPLICATION
 
 App Key
