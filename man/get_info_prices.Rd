@@ -4,7 +4,7 @@
 \alias{get_info_prices}
 \title{Get info (non-tradeable) prices for list of instruments}
 \usage{
-get_info_prices(token, uics, asset_type = "Stock", amount = 10000)
+get_info_prices(token, uics, asset_type = "Stock", amount = 10000, ...)
 }
 \arguments{
 \item{token}{character, authorization token, for demo environments
@@ -15,6 +15,8 @@ possibly a 24 hour token}
 \item{asset_type}{character, defaults to "stock"}
 
 \item{amount}{numeric, defaults to 10000}
+
+\item{...}{parameters passed on to response_df()}
 }
 \value{
 tibble with instruments (e.g. stocks)
