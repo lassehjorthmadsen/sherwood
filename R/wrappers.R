@@ -66,6 +66,8 @@ get_instruments <- function(token, exchange_id = "CSE", asset_type = "Stock", ..
       httr::add_headers(Authorization = token)
     )
 
+  httr::stop_for_status(r)
+
   if (httr::http_type(r) != "application/json") {
     stop("API did not return json", call. = FALSE)
   }
