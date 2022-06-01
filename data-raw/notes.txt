@@ -9,6 +9,16 @@ To-do
 7) Analyze data: What is the return if you just buy all available options?
 8) Get an algo to run on simulation environment
 
+
+Figure out:
+- We get info prices only for very few options. Why?
+- Understand option space
+- Try optionchain endpoint
+
+Reset Simulation Account
+Example:
+PUT https://gateway.saxobank.com/sim/openapi/port/v1/accounts/1gm4hJD76DKVkt5XBSYyrw==/reset
+
 Status
 
 Okay, 1) gives problems (but remember to try information in notes below.)

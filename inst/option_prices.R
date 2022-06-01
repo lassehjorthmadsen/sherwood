@@ -51,8 +51,3 @@ prices %>% view("prices")
 
 sch <- get_schedule(token = token24, uic = "18094550", asset_type = "StockOption", remove_constant_cols = F)
 
-
-# To do:
-# We get info prices only for very few options. Why?
-# Understand option space
-# Try optionchain endpoint

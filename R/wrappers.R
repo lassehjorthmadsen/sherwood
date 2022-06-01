@@ -150,3 +150,47 @@ get_schedule <- function(token, uic, asset_type = "Stock", ...) {
   schedule <- response_df(r, ...)
   schedule
 }
+
+
+#' Get active orders for logged-in client
+#'
+#' @param token character, authorization token, for demo environments
+#' possibly a 24 hour token
+#' @param ... parameters passed on to response_df()
+#'
+#' @return tibble with active orders
+#' @export
+#'
+get_orders <- function(token, ...) {
+
+  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/port/v1/orders/me",
+                 query = list("fieldGroups" = "DisplayAndFormat"),
+                 httr::add_headers(Authorization = token)
+                 )
+
+  httr::stop_for_status(r)
+
+  orders <- response_df(r, ...)
+  orders
+}
+
+
+#' Get cash balance for logged-in client
+#'
+#' @param token character, authorization token, for demo environments
+#' possibly a 24 hour token
+#'
+#' @return numeric, cash balance
+#'
+get_balance <- function(token, ...) {
+
+  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/port/v1/balances/me",
+                 httr::add_headers(Authorization = token)
+                 )
+
+  httr::stop_for_status(r)
+
+  balance <- content(r)$CashBalance
+  balance
+}
+
