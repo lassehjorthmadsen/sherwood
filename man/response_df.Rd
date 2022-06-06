@@ -4,7 +4,7 @@
 \alias{response_df}
 \title{Convert HTTP response to dataframe}
 \usage{
-response_df(response, remove_constant_cols = TRUE)
+response_df(response, remove_constant_cols = FALSE)
 }
 \arguments{
 \item{response}{A response object from {httr}}

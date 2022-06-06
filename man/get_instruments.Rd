@@ -7,13 +7,15 @@
 get_instruments(token, exchange_id = "CSE", asset_type = "Stock", ...)
 }
 \arguments{
-\item{token}{character}
+\item{token}{character, authorization token, for demo environments
+possibly a 24 hour token}
 
-\item{exchange_id}{character}
+\item{exchange_id}{character, the Exchange to search, e.g. "CSE" for
+Copenhagen Stock Exchange}
 
-\item{asset_type}{character}
+\item{asset_type}{character, type of asset, e.g. "Stock" or "StockOption"}
 
-\item{...}{parameters passed on to response_df()}
+\item{...}{parameters passed on to \code{response_df()}}
 }
 \value{
 tibble

@@ -14,7 +14,7 @@ possibly a 24 hour token}
 
 \item{asset_type}{character, type of asset}
 
-\item{...}{parameters passed on to response_df()}
+\item{...}{parameters passed on to \code{response_df()}}
 }
 \value{
 tibble with trading schedule

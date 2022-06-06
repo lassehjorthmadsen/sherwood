@@ -8,26 +8,78 @@ utils::globalVariables("where")
 #' @return Tibble with response content
 #' @export
 #'
-response_df <- function(response, remove_constant_cols = TRUE) {
-
+response_df <- function(response, remove_constant_cols = FALSE) {
   df <- response %>%
     httr::content(as = "text") %>%
     jsonlite::fromJSON(flatten = T) %>%
+    purrr::compact() %>%
     as.data.frame() %>%
     dplyr::as_tibble() %>%
-    dplyr::mutate(dplyr::across(dplyr::ends_with(c("LastUpdated", "Time")), lubridate::as_datetime))
+    dplyr::mutate(dplyr::across(dplyr::ends_with(
+      c("LastUpdated", "EndTime", "StartTime", "OrderTime")
+    ), lubridate::as_datetime))
 
   if (remove_constant_cols & nrow(df) > 1) {
-    df <- df %>% dplyr::select(where(~ dplyr::n_distinct(.) > 1))
+    df <- df %>% dplyr::select(where( ~ dplyr::n_distinct(.) > 1))
   }
 
   df
 }
 
 
-#' Get exchange names and data
+#' Get client details
 #'
 #' @param token character
+#' @param ... parameters passed on to `response_df()`
+#'
+#' @details
+#' See the [Open API Documentation](https://www.developer.saxo/openapi/referencedocs/port/v1/clients/getclient/1499e70934cb99a0c9e70d53f9ad8f7d)
+#'
+#' @return tibble
+#'
+#' @export
+#'
+get_client_info <- function(token, ...) {
+  r <-
+    httr::GET(
+      "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me",
+      httr::add_headers(Authorization = token)
+    )
+
+  client <- response_df(r, ...)
+  client
+}
+
+
+#' @title Get accounts for user
+#' Returns all accounts under a particular client to which the logged in user belongs.
+#'
+#' @param token character, authorization token, for demo environments
+#' possibly a 24 hour token
+#' @param ... parameters passed on to `response_df()`
+#'
+#' @details
+#' See the [Open API Documentation](https://www.developer.saxo/openapi/referencedocs/port/v1/accounts/getaccounts/af56e3512758f8125dc6e5493d93c019)
+#'
+#' @return tibble
+#' @export
+#'
+get_account_info <- function(token, ...) {
+  r <-
+    httr::GET(
+      "https://gateway.saxobank.com/sim/openapi/port/v1/accounts/me",
+      httr::add_headers(Authorization = token)
+    )
+
+  account <- response_df(r, remove_constant_cols = FALSE)
+  account
+}
+
+
+#' Get exchange names and data
+#'
+#' @param token character, authorization token, for demo environments
+#' possibly a 24 hour token
 #'
 #' @return tibble
 #' @export
@@ -50,10 +102,12 @@ get_exchanges <- function(token) {
 
 #' Get stock names and identifiers
 #'
-#' @param token character
-#' @param exchange_id character
-#' @param asset_type character
-#' @param ... parameters passed on to response_df()
+#' @param token character, authorization token, for demo environments
+#' possibly a 24 hour token
+#' @param exchange_id character, the Exchange to search, e.g. "CSE" for
+#' Copenhagen Stock Exchange
+#' @param asset_type character, type of asset, e.g. "Stock" or "StockOption"
+#' @param ... parameters passed on to `response_df()`
 #'
 #' @return tibble
 #' @export
@@ -83,7 +137,7 @@ get_instruments <- function(token, exchange_id = "CSE", asset_type = "Stock", ..
 #' @param uics character, comma separated list of identifiers
 #' @param asset_type character, defaults to "stock"
 #' @param amount numeric, defaults to 10000
-#' @param ... parameters passed on to response_df()
+#' @param ... parameters passed on to `response_df()`
 #'
 #' @return
 #' tibble with instruments (e.g. stocks)
@@ -108,7 +162,7 @@ get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000, .
 #' possibly a 24 hour token
 #' @param uics character, comma separated list of identifiers
 #' @param asset_type character, defaults to "stock"
-#' @param ... parameters passed on to response_df()
+#' @param ... parameters passed on to `response_df()`
 #'
 #' @return
 #' tibble with instruments (e.g. stocks)
@@ -132,18 +186,21 @@ get_details <- function(token, uics, asset_type = "Stock", ...) {
 #' possibly a 24 hour token
 #' @param uic character, instrument identifier
 #' @param asset_type character, type of asset
-#' @param ... parameters passed on to response_df()
+#' @param ... parameters passed on to `response_df()`
 #'
 #' @return tibble with trading schedule
 #' @export
 #'
 get_schedule <- function(token, uic, asset_type = "Stock", ...) {
-  url <- paste("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments/tradingschedule",
-               uic, asset_type, sep = "/")
+  url <-
+    paste(
+      "https://gateway.saxobank.com/sim/openapi/ref/v1/instruments/tradingschedule",
+      uic,
+      asset_type,
+      sep = "/"
+    )
 
-  r <- httr::GET(url, query = list(Uic = uic, AssetType = asset_type),
-                 httr::add_headers(Authorization = token)
-  )
+  r <- httr::GET(url, httr::add_headers(Authorization = token))
 
   httr::stop_for_status(r)
 
@@ -156,29 +213,35 @@ get_schedule <- function(token, uic, asset_type = "Stock", ...) {
 #'
 #' @param token character, authorization token, for demo environments
 #' possibly a 24 hour token
-#' @param ... parameters passed on to response_df()
+#' @param ... parameters passed on to `response_df()`
 #'
 #' @return tibble with active orders
 #' @export
 #'
 get_orders <- function(token, ...) {
-
-  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/port/v1/orders/me",
-                 query = list("fieldGroups" = "DisplayAndFormat"),
-                 httr::add_headers(Authorization = token)
-                 )
+  r <-
+    httr::GET(
+      "https://gateway.saxobank.com/sim/openapi/port/v1/orders/me",
+      query = list("fieldGroups" = "DisplayAndFormat"),
+      httr::add_headers(Authorization = token)
+    )
 
   httr::stop_for_status(r)
 
-  orders <- response_df(r, ...)
+  if (!purrr::is_empty(httr::content(r)$Data)) {
+    orders <- response_df(r, ...)
+  } else {
+    orders <- NULL
+  }
+
   orders
 }
-
 
 #' Get cash balance for logged-in client
 #'
 #' @param token character, authorization token, for demo environments
 #' possibly a 24 hour token
+#' @param ... parameters passed on to `response_df()`
 #'
 #' @return numeric, cash balance
 #'
@@ -190,7 +253,120 @@ get_balance <- function(token, ...) {
 
   httr::stop_for_status(r)
 
-  balance <- content(r)$CashBalance
+  balance <- httr::content(r)$CashBalance
   balance
 }
 
+
+#' Place a new order
+#'
+#' @param token character, authorization token, for demo environments
+#' possibly a 24 hour token
+#' @param uic character, instrument identifier
+#' @param buy_sell character, "Buy" or "Sell
+#' @param asset_type character, type of asset to buy or sell, e.g. "Stock" (default)
+#' @param amount numeric, amount to buy or sell, either by number of stocks
+#' ("Quantity") or by value ("CashAmount") as specified by `amount_type`
+#' @param amount_type character, either "CashAmount" or "Quantity" (default)
+#' @param order_price numeric, the price of the order, optional for market orders, see
+#' `order_type` parameter
+#' @param order_type character, defaults to "Market", see link in Details for more
+#' information
+#' @param ... parameters passed on to `response_df()`
+#'
+#' @return tibble
+#'
+#' @details
+#' See the [Open API Documentation](https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/placeorder/6cd02ecfc9130d34dc5c59fb182fc5b4)
+#'
+#' @export
+#'
+place_order <- function(token,
+                        uic,
+                        buy_sell,
+                        asset_type = "Stock",
+                        amount = 1,
+                        amount_type = "Quantity",
+                        order_price = 1,
+                        order_type = "Market",
+                        ...) {
+  r <-
+    httr::POST(
+      "https://gateway.saxobank.com/sim/openapi/trade/v2/orders",
+      body = list(
+        "Uic" = uic,
+        "BuySell" = buy_sell,
+        "AssetType" = asset_type,
+        "Amount" = amount,
+        "AmountType" = amount_type,
+        "OrderPrice" = order_price,
+        "OrderType" = order_type,
+        "OrderRelation" = "StandAlone",
+        "ManualOrder" = TRUE
+      ),
+      config = httr::add_headers(Authorization = token),
+      encode = "form"
+    )
+
+  order <- response_df(r)
+  order
+}
+
+
+#' Cancel one or more orders
+#'
+#' @param token character, authorization token, for demo environments
+#' possibly a 24 hour token
+#' @param account_key character
+#' @param order_ids character, one or more order ids
+#'
+#' @return tibble
+#'
+#' @details
+#' See the [Open API Documentation](https://www.developer.saxo/openapi/referencedocs/trade/v2/orders/cancelorder/a1fd2fffa62f21901f23318f65fe8147)
+#'
+#' @export
+#'
+cancel_order <- function(token, account_key, order_ids) {
+  url <-
+    paste0(
+      "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/",
+      order_ids,
+      "/?",
+      "AccountKey=",
+      account_key
+    )
+
+  r <- httr::DELETE(
+    url = url,
+    config = httr::add_headers(Authorization = token)
+  )
+
+  httr::stop_for_status(r)
+
+  cancel <- response_df(r)
+  cancel
+}
+
+
+#' Cancel all orders
+#' Call `get_orders()` and `cancel_order()` to cancel *all* orders for an account
+#'
+#' @param token character, authorization token, for demo environments
+#' possibly a 24 hour token
+#' @param account_key character
+#' @param ... parameters passed on to `response_df()`
+#'
+#' @return tibble, containing list of cancelled order ids
+#' @export
+#'
+cancel_all_orders <- function(token, account_key, ...) {
+
+  order_ids <- get_orders(token = token) %>%
+    dplyr::select(dplyr::ends_with("OrderId")) %>%
+    dplyr::pull(1) %>%
+    paste(collapse = ",")
+
+  cancel_all <- cancel_order(token = token, account_key = account_key, order_ids = order_ids, ...)
+  cancel_all
+}

@@ -1,38 +1,38 @@
-# Snippets to buy stocks on sim environment
+# Demo snippets to buy stocks on sim environment
 
 library(tidyverse)
 library(httr)
 devtools::load_all()
 
 # 24 hour token for simulation account
-# https://www.developer.saxo/openapi/token/current#/lst/1650285935777
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiODY2YTJkZjYyNDdjNDc5MGE4YTIzZjZkOWRhNWQ4ZGEiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTQxMTQ0MDgiLCJvYWwiOiIxRiJ9.L-PD61_5wqqi6tR1mTF0X7htFF008OPYpXsKpuTt9IMSHOGfYg5e1Zf3t1NTHe7nw69CGido52zhvNaojZIJVQ"
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiM2U0Yzg1ODAwY2NkNDYyZTk5NDUwMGFiNDkyNWUwZjYiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTQ1NDgwMzQiLCJvYWwiOiIxRiJ9.Mm9UXQ61eVzT7mo6Ub-gHxefe3HNgXREk-RGYIfmAqTeuhZ8dHW5g3QYcLuI_oW8qWWXlSbKfrFPgjGu-3dcaw"
 token24 <- paste("Bearer", token24)
 
-stc <- get_instruments(token24, exchange_id = "CSE", asset_type = "Stock")
+# My default key
+default_key <- get_client_info(token24) %>% slice_head(n = 1) %>% pull(DefaultAccountKey)
 
-random_stock <- stc %>% slice_sample(n = 1)
-random_uic <- random_stock %>% pull(Data.Identifier)
+# All stocks from CSE, Copenhagen Stock Exchange
+stocks <- get_instruments(token24, exchange_id = "CSE", asset_type = "Stock")
 
-prc <- get_info_prices(token24, uics = random_uic)
+# Buy a random stock
+random_uic <- stocks %>% slice_sample(n = 1) %>% pull(Data.Identifier)
+place_order(token24, random_uic, "Buy", "Stock")
 
-r <-
-  httr::POST(
-    "https://gateway.saxobank.com/sim/openapi/trade/v2/orders",
-    body = list(
-      "Uic" = random_uic,
-      "BuySell" = "Buy",
-      "AssetType" = "Stock",
-      "Amount" = 1,
-      "AmountType" = "Quantity",
-      "OrderPrice" = 7,
-      "OrderType" = "Market",
-      "OrderRelation" = "StandAlone",
-      "ManualOrder" = TRUE
-    ),
-    config = httr::add_headers(Authorization = token24),
-    encode = "form"
-  )
+# Show orders, selected fields
+get_orders(token24) %>% select(
+  Data.AssetType,
+  Data.BuySell,
+  Data.OrderId,
+  Data.OrderTime,
+  Data.DisplayAndFormat.Description,
+  Data.Exchange.Description
+)
 
-http_status(r)
-get_orders(token24) %>% view()
+# Cancel latest order
+ids <- get_orders(token24) %>% slice_head(n = 1) %>% pull(Data.OrderId) %>% paste(collapse = ",")
+cancel_order(token = token24, account_key = default_key, order_ids = ids)
+get_orders(token24, remove_constant_cols = T)
+
+# Cancel all orders
+cancel_all_orders(token = token24, account_key = default_key)
+get_orders(token24, remove_constant_cols = T)

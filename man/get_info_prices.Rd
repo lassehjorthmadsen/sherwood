@@ -16,7 +16,7 @@ possibly a 24 hour token}
 
 \item{amount}{numeric, defaults to 10000}
 
-\item{...}{parameters passed on to response_df()}
+\item{...}{parameters passed on to \code{response_df()}}
 }
 \value{
 tibble with instruments (e.g. stocks)
