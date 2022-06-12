@@ -5,3 +5,4 @@
 R/snippets.R
 R/tutorial.R
 R/algo.R
+^\.httr-oauth$
