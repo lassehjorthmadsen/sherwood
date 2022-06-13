@@ -16,6 +16,7 @@ token24 <- paste("Bearer", token24)
 r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/users/me",
          add_headers(Authorization = token24))
 content(r)$Name
+content(r)$UserKey
 
 # Look up information about the Client
 # The query below will return some basic information about the client associated with the logged in user.
