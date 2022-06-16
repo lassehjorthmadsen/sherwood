@@ -4,7 +4,11 @@
 \alias{authorize_live}
 \title{Authorize sherwood for live environment}
 \usage{
-authorize_live()
+authorize_live(cache = FALSE)
+}
+\arguments{
+\item{cache}{boolean, should the token be cached to file \code{.httr.oauth}?
+Defaults to FALSE}
 }
 \value{
 A Token2.0 reference class (RC) object

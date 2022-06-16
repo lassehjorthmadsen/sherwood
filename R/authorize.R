@@ -7,6 +7,9 @@
 #' The returned token object must be pased to subsequent API calls
 #' using the `config` parameter in e.g. `httr::GET()`.
 #'
+#' @param cache boolean, should the token be cached to file `.httr.oauth`?
+#' Defaults to FALSE
+#'
 #' @return A Token2.0 reference class (RC) object
 #'
 #' @details
@@ -15,7 +18,7 @@
 #'
 #' @export
 #'
-authorize_live <- function() {
+authorize_live <- function(cache = FALSE) {
 
   sherwood_key <- Sys.getenv("sherwood_key")
   sherwood_secret <- Sys.getenv("sherwood_secret")
@@ -32,7 +35,7 @@ authorize_live <- function() {
                      key = sherwood_key,
                      secret = sherwood_secret)
 
-  my_token <- httr::oauth2.0_token(saxo_endpoint, sherwood_app, cache = FALSE)
+  my_token <- httr::oauth2.0_token(saxo_endpoint, sherwood_app, cache = cache)
   #my_token <- oauth2.0_token(saxo, myapp, cache = TRUE)
   my_token
 }

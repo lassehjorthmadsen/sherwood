@@ -4,10 +4,15 @@
 \alias{get_client_info}
 \title{Get client details}
 \usage{
-get_client_info(token, ...)
+get_client_info(token, live = FALSE, ...)
 }
 \arguments{
-\item{token}{character}
+\item{token}{either a character or a token2.0 reference class (RC) object
+as returned by \code{httr::oauth2.0_token()}. Sim environment uses character,
+(a '24 hour token'); live environment a token object.}
+
+\item{live}{boolean, TRUE for live environment, i.e. real money.
+Defaults to FALSE, i.e. simulation environment.}
 
 \item{...}{parameters passed on to \code{response_df()}}
 }

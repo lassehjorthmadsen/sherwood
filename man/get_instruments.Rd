@@ -4,11 +4,21 @@
 \alias{get_instruments}
 \title{Get stock names and identifiers}
 \usage{
-get_instruments(token, exchange_id = "CSE", asset_type = "Stock", ...)
+get_instruments(
+  token,
+  live = FALSE,
+  exchange_id = "CSE",
+  asset_type = "Stock",
+  ...
+)
 }
 \arguments{
-\item{token}{character, authorization token, for demo environments
-possibly a 24 hour token}
+\item{token}{either a character or a token2.0 reference class (RC) object
+as returned by \code{httr::oauth2.0_token()}. Sim environment uses character,
+(a '24 hour token'); live environment a token object.}
+
+\item{live}{boolean, TRUE for live environment, i.e. real money.
+Defaults to FALSE, i.e. simulation environment.}
 
 \item{exchange_id}{character, the Exchange to search, e.g. "CSE" for
 Copenhagen Stock Exchange}

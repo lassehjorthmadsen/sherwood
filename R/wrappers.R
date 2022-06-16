@@ -29,7 +29,11 @@ response_df <- function(response, remove_constant_cols = FALSE) {
 
 #' Get client details
 #'
-#' @param token character
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param ... parameters passed on to `response_df()`
 #'
 #' @details
@@ -39,12 +43,16 @@ response_df <- function(response, remove_constant_cols = FALSE) {
 #'
 #' @export
 #'
-get_client_info <- function(token, ...) {
-  r <-
-    httr::GET(
-      "https://gateway.saxobank.com/sim/openapi/port/v1/clients/me",
-      httr::add_headers(Authorization = token)
+get_client_info <- function(token, live = FALSE, ...) {
+
+  if (live) {
+    r <- httr::GET("https://gateway.saxobank.com/openapi/port/v1/clients/me",
+             config = token)
+  } else {
+    r <- httr::GET("https://gateway.saxobank.com/sim/openapi/port/v1/clients/me",
+                   httr::add_headers(Authorization = token)
     )
+  }
 
   client <- response_df(r, ...)
   client
@@ -54,8 +62,11 @@ get_client_info <- function(token, ...) {
 #' @title Get accounts for user
 #' Returns all accounts under a particular client to which the logged in user belongs.
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param ... parameters passed on to `response_df()`
 #'
 #' @details
@@ -64,12 +75,16 @@ get_client_info <- function(token, ...) {
 #' @return tibble
 #' @export
 #'
-get_account_info <- function(token, ...) {
-  r <-
-    httr::GET(
-      "https://gateway.saxobank.com/sim/openapi/port/v1/accounts/me",
-      httr::add_headers(Authorization = token)
+get_account_info <- function(token, live = FALSE, ...) {
+
+  if (live) {
+    r <- httr::GET("https://gateway.saxobank.com/openapi/port/v1/accounts/me",
+             config = token)
+  } else {
+    r <- httr::GET("https://gateway.saxobank.com/sim/openapi/port/v1/accounts/me",
+                   httr::add_headers(Authorization = token)
     )
+  }
 
   account <- response_df(r, remove_constant_cols = FALSE)
   account
@@ -78,18 +93,25 @@ get_account_info <- function(token, ...) {
 
 #' Get exchange names and data
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #'
 #' @return tibble
 #' @export
 #'
-get_exchanges <- function(token) {
+get_exchanges <- function(token, live = FALSE) {
 
-  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges",
-      query = list(`$top` = 1000),
-      httr::add_headers(Authorization = token)
+  if (live) {
+    r <- httr::GET("https://gateway.saxobank.com/openapi/ref/v1/exchanges",
+             config = token)
+  } else {
+    r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/exchanges",
+                   httr::add_headers(Authorization = token)
     )
+  }
 
   if (httr::http_type(r) != "application/json") {
     stop("API did not return json", call. = FALSE)
@@ -102,8 +124,11 @@ get_exchanges <- function(token) {
 
 #' Get stock names and identifiers
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param exchange_id character, the Exchange to search, e.g. "CSE" for
 #' Copenhagen Stock Exchange
 #' @param asset_type character, type of asset, e.g. "Stock" or "StockOption"
@@ -112,13 +137,22 @@ get_exchanges <- function(token) {
 #' @return tibble
 #' @export
 #'
-get_instruments <- function(token, exchange_id = "CSE", asset_type = "Stock", ...) {
-  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
-      query = list(ExchangeId = exchange_id,
-                   AssetTypes = asset_type,
-                   `$top` = 1000),
-      httr::add_headers(Authorization = token)
+get_instruments <- function(token, live = FALSE, exchange_id = "CSE", asset_type = "Stock", ...) {
+
+  if (live) {
+    r <- httr::GET("https://gateway.saxobank.com/openapi/ref/v1/instruments",
+                   query = list(ExchangeId = exchange_id,
+                                AssetTypes = asset_type,
+                                `$top` = 1000),
+                   config = token)
+  } else {
+    r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments",
+                   query = list(ExchangeId = exchange_id,
+                                AssetTypes = asset_type,
+                                `$top` = 1000),
+                   httr::add_headers(Authorization = token)
     )
+  }
 
   httr::stop_for_status(r)
 
@@ -132,8 +166,11 @@ get_instruments <- function(token, exchange_id = "CSE", asset_type = "Stock", ..
 
 #' Get info (non-tradeable) prices for list of instruments
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param uics character, comma separated list of identifiers
 #' @param asset_type character, defaults to "stock"
 #' @param amount numeric, defaults to 10000
@@ -143,14 +180,24 @@ get_instruments <- function(token, exchange_id = "CSE", asset_type = "Stock", ..
 #' tibble with instruments (e.g. stocks)
 #' @export
 #'
-get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000, ...) {
-  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
-           query = list(Uics = uics,
-                        AssetType = asset_type,
-                        Amount = amount,
-                        FieldGroups = "DisplayAndFormat, Quote"),
-           httr::add_headers(Authorization = token)
-  )
+get_info_prices <- function(token, live = FALSE, uics, asset_type = "Stock", amount = 10000, ...) {
+
+  if (live) {
+    r <- httr::GET("https://gateway.saxobank.com/openapi/trade/v1/infoprices/list",
+                   query = list(Uics = uics,
+                                AssetType = asset_type,
+                                Amount = amount,
+                                FieldGroups = "DisplayAndFormat, Quote"),
+                   config = token)
+  } else {
+    r <- httr::GET("https://gateway.saxobank.com/sim/openapi/trade/v1/infoprices/list",
+                   query = list(Uics = uics,
+                                AssetType = asset_type,
+                                Amount = amount,
+                                FieldGroups = "DisplayAndFormat, Quote"),
+                   httr::add_headers(Authorization = token)
+    )
+  }
 
   prices <- response_df(r, ...)
   prices
@@ -158,8 +205,11 @@ get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000, .
 
 #' Get detailed information for list of instruments, e.g. stocks
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param uics character, comma separated list of identifiers
 #' @param asset_type character, defaults to "stock"
 #' @param ... parameters passed on to `response_df()`
@@ -168,12 +218,20 @@ get_info_prices <- function(token, uics, asset_type = "Stock", amount = 10000, .
 #' tibble with instruments (e.g. stocks)
 #' @export
 #'
-get_details <- function(token, uics, asset_type = "Stock", ...) {
-  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments/details",
-      query = list(Uics = uics,
-                   AssetType = asset_type),
-      httr::add_headers(Authorization = token)
+get_details <- function(token, live = FALSE, uics, asset_type = "Stock", ...) {
+
+  if (live) {
+    r <- httr::GET("https://gateway.saxobank.com/openapi/ref/v1/instruments/details",
+                   query = list(Uics = uics,
+                                AssetType = asset_type),
+                   config = token)
+  } else {
+    r <- httr::GET("https://gateway.saxobank.com/sim/openapi/ref/v1/instruments/details",
+                   query = list(Uics = uics,
+                                AssetType = asset_type),
+                   httr::add_headers(Authorization = token)
     )
+  }
 
   info <- response_df(r, ...)
   info
@@ -182,8 +240,11 @@ get_details <- function(token, uics, asset_type = "Stock", ...) {
 
 #' Get trading schedule for a given uic and asset type
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param uic character, instrument identifier
 #' @param asset_type character, type of asset
 #' @param ... parameters passed on to `response_df()`
@@ -191,16 +252,36 @@ get_details <- function(token, uics, asset_type = "Stock", ...) {
 #' @return tibble with trading schedule
 #' @export
 #'
-get_schedule <- function(token, uic, asset_type = "Stock", ...) {
-  url <-
-    paste(
-      "https://gateway.saxobank.com/sim/openapi/ref/v1/instruments/tradingschedule",
-      uic,
-      asset_type,
-      sep = "/"
-    )
+get_schedule <- function(token, live = FALSE, uic, asset_type = "Stock", ...) {
 
-  r <- httr::GET(url, httr::add_headers(Authorization = token))
+  if (live) {
+    url <-
+      paste(
+        "https://gateway.saxobank.com/openapi/ref/v1/instruments/tradingschedule",
+        uic,
+        asset_type,
+        sep = "/"
+      )
+
+    r <- httr::GET(url = url,
+                   query = list(Uics = uic,
+                                AssetType = asset_type),
+                   config = token)
+  } else {
+    url <-
+      paste(
+        "https://gateway.saxobank.com/sim/openapi/ref/v1/instruments/tradingschedule",
+        uic,
+        asset_type,
+        sep = "/"
+      )
+
+    r <- httr::GET(url = url,
+                   query = list(Uics = uic,
+                                AssetType = asset_type),
+                   httr::add_headers(Authorization = token)
+    )
+  }
 
   httr::stop_for_status(r)
 
@@ -211,20 +292,28 @@ get_schedule <- function(token, uic, asset_type = "Stock", ...) {
 
 #' Get active orders for logged-in client
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param ... parameters passed on to `response_df()`
 #'
 #' @return tibble with active orders
 #' @export
 #'
-get_orders <- function(token, ...) {
-  r <-
-    httr::GET(
-      "https://gateway.saxobank.com/sim/openapi/port/v1/orders/me",
-      query = list("fieldGroups" = "DisplayAndFormat"),
-      httr::add_headers(Authorization = token)
+get_orders <- function(token, live = FALSE, ...) {
+
+  if (live) {
+    r <- httr::GET("https://gateway.saxobank.com/openapi/port/v1/orders/me",
+                   query = list("fieldGroups" = "DisplayAndFormat"),
+                   config = token)
+  } else {
+    r <- httr::GET("https://gateway.saxobank.com/sim/openapi/port/v1/orders/me",
+                   query = list("fieldGroups" = "DisplayAndFormat"),
+                   httr::add_headers(Authorization = token)
     )
+  }
 
   httr::stop_for_status(r)
 
@@ -239,17 +328,23 @@ get_orders <- function(token, ...) {
 
 #' Get cash balance for logged-in client
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
-#' @param ... parameters passed on to `response_df()`
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #'
 #' @return numeric, cash balance
 #'
-get_balance <- function(token, ...) {
-
-  r <- httr::GET("https://gateway.saxobank.com/sim/openapi/port/v1/balances/me",
-                 httr::add_headers(Authorization = token)
-                 )
+get_balance <- function(token, live = FALSE) {
+  if (live) {
+    r <- httr::GET("https://gateway.saxobank.com/openapi/port/v1/balances/me",
+             config = token)
+  } else {
+    r <- httr::GET("https://gateway.saxobank.com/sim/openapi/port/v1/balances/me",
+                   httr::add_headers(Authorization = token)
+                   )
+  }
 
   httr::stop_for_status(r)
 
@@ -260,8 +355,11 @@ get_balance <- function(token, ...) {
 
 #' Place a new order
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param uic character, instrument identifier
 #' @param buy_sell character, "Buy" or "Sell
 #' @param asset_type character, type of asset to buy or sell, e.g. "Stock" (default)
@@ -282,6 +380,7 @@ get_balance <- function(token, ...) {
 #' @export
 #'
 place_order <- function(token,
+                        live = FALSE,
                         uic,
                         buy_sell,
                         asset_type = "Stock",
@@ -290,23 +389,36 @@ place_order <- function(token,
                         order_price = 1,
                         order_type = "Market",
                         ...) {
-  r <-
-    httr::POST(
-      "https://gateway.saxobank.com/sim/openapi/trade/v2/orders",
-      body = list(
-        "Uic" = uic,
-        "BuySell" = buy_sell,
-        "AssetType" = asset_type,
-        "Amount" = amount,
-        "AmountType" = amount_type,
-        "OrderPrice" = order_price,
-        "OrderType" = order_type,
-        "OrderRelation" = "StandAlone",
-        "ManualOrder" = TRUE
-      ),
-      config = httr::add_headers(Authorization = token),
-      encode = "form"
-    )
+
+  body <- list(
+    "Uic" = uic,
+    "BuySell" = buy_sell,
+    "AssetType" = asset_type,
+    "Amount" = amount,
+    "AmountType" = amount_type,
+    "OrderPrice" = order_price,
+    "OrderType" = order_type,
+    "OrderRelation" = "StandAlone",
+    "ManualOrder" = TRUE
+  )
+
+  if (live) {
+    r <-
+      httr::POST(
+        "https://gateway.saxobank.com/openapi/trade/v2/orders",
+        body = body,
+        config = token,
+        encode = "form"
+      )
+  } else {
+    r <-
+      httr::POST(
+        "https://gateway.saxobank.com/sim/openapi/trade/v2/orders",
+        body = body,
+        config = httr::add_headers(Authorization = token),
+        encode = "form"
+      )
+  }
 
   order <- response_df(r)
   order
@@ -315,8 +427,11 @@ place_order <- function(token,
 
 #' Cancel one or more orders
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param account_key character
 #' @param order_ids character, one or more order ids
 #'
@@ -327,20 +442,37 @@ place_order <- function(token,
 #'
 #' @export
 #'
-cancel_order <- function(token, account_key, order_ids) {
-  url <-
-    paste0(
-      "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/",
-      order_ids,
-      "/?",
-      "AccountKey=",
-      account_key
-    )
+cancel_order <- function(token, live = FALSE, account_key, order_ids) {
 
-  r <- httr::DELETE(
-    url = url,
-    config = httr::add_headers(Authorization = token)
-  )
+  if (live) {
+    url <-
+      paste0(
+        "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/",
+        order_ids,
+        "/?",
+        "AccountKey=",
+        account_key
+      )
+
+    r <- httr::DELETE(
+      url = url,
+      config = token)
+
+  } else {
+    url <-
+      paste0(
+        "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/",
+        order_ids,
+        "/?",
+        "AccountKey=",
+        account_key
+      )
+
+    r <- httr::DELETE(
+      url = url,
+      config = httr::add_headers(Authorization = token)
+    )
+  }
 
   httr::stop_for_status(r)
 
@@ -352,21 +484,24 @@ cancel_order <- function(token, account_key, order_ids) {
 #' Cancel all orders
 #' Call `get_orders()` and `cancel_order()` to cancel *all* orders for an account
 #'
-#' @param token character, authorization token, for demo environments
-#' possibly a 24 hour token
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
 #' @param account_key character
 #' @param ... parameters passed on to `response_df()`
 #'
 #' @return tibble, containing list of cancelled order ids
 #' @export
 #'
-cancel_all_orders <- function(token, account_key, ...) {
+cancel_all_orders <- function(token, live = FALSE, account_key, ...) {
 
   order_ids <- get_orders(token = token) %>%
     dplyr::select(dplyr::ends_with("OrderId")) %>%
     dplyr::pull(1) %>%
     paste(collapse = ",")
 
-  cancel_all <- cancel_order(token = token, account_key = account_key, order_ids = order_ids, ...)
+  cancel_all <- cancel_order(token = token, live = live, account_key = account_key, order_ids = order_ids, ...)
   cancel_all
 }

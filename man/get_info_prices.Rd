@@ -4,11 +4,22 @@
 \alias{get_info_prices}
 \title{Get info (non-tradeable) prices for list of instruments}
 \usage{
-get_info_prices(token, uics, asset_type = "Stock", amount = 10000, ...)
+get_info_prices(
+  token,
+  live = FALSE,
+  uics,
+  asset_type = "Stock",
+  amount = 10000,
+  ...
+)
 }
 \arguments{
-\item{token}{character, authorization token, for demo environments
-possibly a 24 hour token}
+\item{token}{either a character or a token2.0 reference class (RC) object
+as returned by \code{httr::oauth2.0_token()}. Sim environment uses character,
+(a '24 hour token'); live environment a token object.}
+
+\item{live}{boolean, TRUE for live environment, i.e. real money.
+Defaults to FALSE, i.e. simulation environment.}
 
 \item{uics}{character, comma separated list of identifiers}
 

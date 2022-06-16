@@ -4,48 +4,69 @@ library(devtools)
 load_all()
 
 # 24 hour token for simulation account
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiMzNiODIyZjRiMzFhNDJjMDhkYTNlNjAwNGUzNTg0YzciLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTUzNjgzODMiLCJvYWwiOiIxRiJ9.8EYSo7H--fkGLx0SdOzAZwA0GM32ylk3nI1I0gi34G0baGUFZsUCcAxdatKCA8Yld3GwvOmTSYEGO-Lpu_7_ig"
+token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiYzRmNTNiZDAyOGQ5NDgyMzg0OGVkNmJkZmExOWE0N2YiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTU0NjM1MDgiLCJvYWwiOiIxRiJ9.37-_MRk3jyi4gsMIIqO_OP62TjUxD_FiXqn69_XlT06hLLnjbW8kq-38D6WYVK-uQQhN3BNTvaOE0DJpSBcmfg"
 token24 <- paste("Bearer", token24)
 
 my_token <- authorize_live()
 
-# Live
-r <- GET("https://gateway.saxobank.com/openapi/port/v1/balances/me",
-         config = my_token)
+# client info
+ci <- get_client_info(token = my_token, live = TRUE)
+ci_sim <- get_client_info(token = token24)
 
-http_status(r)
-content(r)$CashBalance
+# account info
+ai <- get_account_info(token = my_token, live = TRUE)
+ai_sim <- get_account_info(token = token24)
 
-# Sim
-r <- GET("https://gateway.saxobank.com/sim/openapi/port/v1/balances/me",
-         httr::add_headers(Authorization = token24))
+# exchanges
+ex <- get_exchanges(token = my_token, live = TRUE)
+ex_sim <- get_exchanges(token = token24)
 
-http_status(r)
-content(r)$CashBalance
+# instruments
+ins <- get_instruments(token = my_token, live = TRUE)
+ins_sim <- get_instruments(token = token24)
 
+# info prices
+uics = ins$Data.Identifier %>% paste(collapse = ",")
+ip <- get_info_prices(token = my_token, live = TRUE, uics = uics)
+ip_sim <- get_info_prices(token = token24, live = FALSE, uics = uics)
 
-# Get this to work (fail because of sim endpoint)
-get_client_info(token = my_token)
-get_balance(token = my_token)
+# price details
+de <- get_details(token = my_token, live = TRUE, uics = uics)
+de_sim <- get_details(token = token24, live = FALSE, uics = uics)
 
-# Get the details about a user, like LastLoginStatus, works on sim
-r <- GET("https://gateway.saxobank.com/openapi/port/v1/users/me",
-         config = my_token)
+# trade schedule
+uic = ins$Data.Identifier[1]
+sc <- get_schedule(token = my_token, live = TRUE, uic = uic)
+sc_sim <- get_schedule(token = token24, live = FALSE, uic = uic)
 
-http_status(r)
-content(r)
-content(r)$UserKey == content(r)$ClientKey # Identical
-content(r)$LastLoginStatus
-content(r)$LastLoginTime %>% lubridate::as_datetime()
-Sys.time() %>% lubridate::as_datetime()
-content(r)$MarketDataViaOpenApiTermsAccepted # Need to fix?
-content(r)$Name
-content(r)$UserKey
+# my orders
+or <- get_orders(token = my_token, live = TRUE)
+or_sim <- get_orders(token = token24, live = FALSE)
 
-# Get the details about logged-in user's client
-r <- GET("https://gateway.saxobank.com/openapi/port/v1/clients/me",
-         config = my_token)
+# balance
+get_balance(token = my_token, live = TRUE)
+get_balance(token = token24, live = FALSE)
 
-http_status(r)
-content(r)
+# place order
+# LIVE
+# A bit careful before trying this on live account:
+# place_order(token = my_token, live = TRUE)
 
+# SIM
+po <- place_order(
+  token = token24,
+  live = FALSE,
+  uic = uic,
+  buy_sell = "Buy",
+  asset_type = "Stock",
+  order_type = "Limit",
+  order_price = 150
+)
+
+# cancel order
+# cancel_order(token = my_token, live = TRUE)
+ids <- get_orders(token = token24, live = FALSE) %>% slice_head(n = 1) %>% pull(Data.OrderId) %>% paste(collapse = ",")
+cancel_order(token = token24, live = FALSE, account_key = ci_sim$DefaultAccountKey[1], order_ids = ids)
+
+# cancel all orders
+cancel_all_orders(token = token24, live = FALSE, account_key = ci_sim$DefaultAccountKey[1])

@@ -4,11 +4,15 @@
 \alias{get_exchanges}
 \title{Get exchange names and data}
 \usage{
-get_exchanges(token)
+get_exchanges(token, live = FALSE)
 }
 \arguments{
-\item{token}{character, authorization token, for demo environments
-possibly a 24 hour token}
+\item{token}{either a character or a token2.0 reference class (RC) object
+as returned by \code{httr::oauth2.0_token()}. Sim environment uses character,
+(a '24 hour token'); live environment a token object.}
+
+\item{live}{boolean, TRUE for live environment, i.e. real money.
+Defaults to FALSE, i.e. simulation environment.}
 }
 \value{
 tibble

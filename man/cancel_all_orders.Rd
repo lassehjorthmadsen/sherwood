@@ -5,11 +5,15 @@
 \title{Cancel all orders
 Call \code{get_orders()} and \code{cancel_order()} to cancel \emph{all} orders for an account}
 \usage{
-cancel_all_orders(token, account_key, ...)
+cancel_all_orders(token, live = FALSE, account_key, ...)
 }
 \arguments{
-\item{token}{character, authorization token, for demo environments
-possibly a 24 hour token}
+\item{token}{either a character or a token2.0 reference class (RC) object
+as returned by \code{httr::oauth2.0_token()}. Sim environment uses character,
+(a '24 hour token'); live environment a token object.}
+
+\item{live}{boolean, TRUE for live environment, i.e. real money.
+Defaults to FALSE, i.e. simulation environment.}
 
 \item{account_key}{character}
 
