@@ -1,14 +1,19 @@
 To-do
 
-1) Use API to get stock option prices
-2) Automate authentication
-3) Buy stock options on simulation environment
-4) Sell stock options on simulation environment
-5) Collect data set on stock option prices and expiration value
-6) Calculate Black Scholes-like fair prices
-7) Analyze data: What is the return if you just buy all available options?
-8) Get an algo to run on simulation environment
+Use API to get stock option prices -- OK
+Automate authentication for live env -- OK
+Buy stock options on simulation environment -- not possible?
+Sell stock options on simulation environment -- not possible?
+Buy a real stock on live environment  -- OK (cancelled, though)
 
+Next:
+
+** Collect data set on stock option prices and expiration value: We want to compare theoretical Black Scholes-prices with actual prices AND value at expiration
+
+** Calculate Black Scholes-like fair prices
+** Analyze data: What is the return if you just buy all available options?
+
+Get an algo to run on simulation environment
 
 Figure out:
 - We get info prices only for very few options. Why?
@@ -21,11 +26,7 @@ PUT https://gateway.saxobank.com/sim/openapi/port/v1/accounts/1gm4hJD76DKVkt5XBS
 
 Status
 
-Okay, 1) gives problems (but remember to try information in notes below.)
-
-Let's do the same but just for stocks (using price/earning ratios), hoping to figure out along the way how to do it for options as well.
-
-STOCK PART DONE, NEEDED TO CONNECT TO LIVE ACCOUNT.
+Okay, options gives problems on sim env (but remember to try information in notes below.)
 
 Did tutorial, very informative.
 
@@ -37,7 +38,6 @@ You can fetch summary information about all instruments and option roots from th
 Notice that each instrument has an Identifier. For everything but options, this identifier will be what we use in other calls as UIC (Universal Instrument Code).
 
 The OpenAPI does not take instrument names or symbols as identifiers. Instead, instruments are identified by a unique combination of UIC (Universal Instrument Code) and AssetType. Pulling this information for the specific instrument you are interested in is key to continue into other operations such as sending orders, building charts, creating reports, etc.
-
 
 Most instruments are uniquely identified by the combination of UIC and AssetType. For option instruments additional parameters are introduced. See the section on options for details.
 

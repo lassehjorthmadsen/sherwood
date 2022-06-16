@@ -48,11 +48,8 @@ get_balance(token = my_token, live = TRUE)
 get_balance(token = token24, live = FALSE)
 
 # place order
-# LIVE
-# A bit careful before trying this on live account:
-# place_order(token = my_token, live = TRUE)
-
-# SIM
+# LIVE: A bit careful with real money; see buy_stock.R snippet
+# SIM:
 po <- place_order(
   token = token24,
   live = FALSE,

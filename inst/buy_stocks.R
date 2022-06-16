@@ -1,38 +1,67 @@
-# Demo snippets to buy stocks on sim environment
+# Demo snippet to buy stocks on live environment
 
 library(tidyverse)
-library(httr)
 devtools::load_all()
 
-# 24 hour token for simulation account
-token24 <- "eyJhbGciOiJFUzI1NiIsIng1dCI6IkRFNDc0QUQ1Q0NGRUFFRTlDRThCRDQ3ODlFRTZDOTEyRjVCM0UzOTQifQ.eyJvYWEiOiI3Nzc3NSIsImlzcyI6Im9hIiwiYWlkIjoiMTA5IiwidWlkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiY2lkIjoibU0zV1o1YU1WTXwyZ201Zk95ckxrdz09IiwiaXNhIjoiRmFsc2UiLCJ0aWQiOiIyMDAyIiwic2lkIjoiM2U0Yzg1ODAwY2NkNDYyZTk5NDUwMGFiNDkyNWUwZjYiLCJkZ2kiOiI4NCIsImV4cCI6IjE2NTQ1NDgwMzQiLCJvYWwiOiIxRiJ9.Mm9UXQ61eVzT7mo6Ub-gHxefe3HNgXREk-RGYIfmAqTeuhZ8dHW5g3QYcLuI_oW8qWWXlSbKfrFPgjGu-3dcaw"
-token24 <- paste("Bearer", token24)
+# Token for live environment
+my_token <- authorize_live()
+
+# My info
+my_info <- get_client_info(token = my_token, live = TRUE)
 
 # My default key
-default_key <- get_client_info(token24) %>% slice_head(n = 1) %>% pull(DefaultAccountKey)
+account_key <- my_info$DefaultAccountKey[1]
 
 # All stocks from CSE, Copenhagen Stock Exchange
-stocks <- get_instruments(token24, exchange_id = "CSE", asset_type = "Stock")
+stocks <- get_instruments(token = my_token, live = TRUE, exchange_id = "CSE", asset_type = "Stock")
 
-# Buy a random stock
-random_uic <- stocks %>% slice_sample(n = 1) %>% pull(Data.Identifier)
-place_order(token24, random_uic, "Buy", "Stock")
+# Info prices
+uics = stocks$Data.Identifier %>% paste(collapse = ",")
+infop <- get_info_prices(token = my_token, live = TRUE, uics = uics)
+infop_sim <- get_info_prices(token = token24, live = FALSE, uics = uics)
 
-# Show orders, selected fields
-get_orders(token24) %>% select(
-  Data.AssetType,
-  Data.BuySell,
-  Data.OrderId,
-  Data.OrderTime,
-  Data.DisplayAndFormat.Description,
-  Data.Exchange.Description
+# Buy a cheap stock
+infop_sim %>%
+  arrange(Data.Quote.Mid) %>%
+  select(Data.DisplayAndFormat.Description,
+         Data.DisplayAndFormat.Symbol,
+         Data.AssetType,
+         Data.Uic,
+         Data.Quote.Mid,
+         Data.Quote.MarketState)
+
+place_order(
+  token = my_token,
+  live = TRUE,
+  uic = 2664,
+  buy_sell = "Buy",
+  asset_type = "Stock",
+  order_type = "Limit",
+  order_price = 0.4
 )
 
+# Show orders, selected fields
+my_orders <- get_orders(token = my_token, live = TRUE) %>%
+  select(
+    AssetType = Data.AssetType,
+    BuySell = Data.BuySell,
+    OrderId = Data.OrderId,
+    OrderTime = Data.OrderTime,
+    AccountKey = Data.AccountKey,
+    Description = Data.DisplayAndFormat.Description,
+    Exchange = Data.Exchange.Description
+  )
+
+my_orders
+
 # Cancel latest order
-ids <- get_orders(token24) %>% slice_head(n = 1) %>% pull(Data.OrderId) %>% paste(collapse = ",")
-cancel_order(token = token24, account_key = default_key, order_ids = ids)
-get_orders(token24, remove_constant_cols = T)
+latest_id <- my_orders %>% slice_max(OrderTime) %>% pull(OrderId)
+latest_AccountKey <- my_orders %>% slice_max(OrderTime) %>% pull(AccountKey)
+
+cancel_order(token = my_token, live = TRUE, account_key = latest_AccountKey, order_ids = latest_id)
+
+get_orders(token = my_token, live = TRUE, remove_constant_cols = F) %>% glimpse()
 
 # Cancel all orders
-cancel_all_orders(token = token24, account_key = default_key)
-get_orders(token24, remove_constant_cols = T)
+cancel_all_orders(token = my_token, live = TRUE, account_key = account_key)
+get_orders(token = my_token, live = TRUE)

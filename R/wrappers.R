@@ -447,7 +447,7 @@ cancel_order <- function(token, live = FALSE, account_key, order_ids) {
   if (live) {
     url <-
       paste0(
-        "https://gateway.saxobank.com/sim/openapi/trade/v2/orders/",
+        "https://gateway.saxobank.com/openapi/trade/v2/orders/",
         order_ids,
         "/?",
         "AccountKey=",
@@ -497,7 +497,7 @@ cancel_order <- function(token, live = FALSE, account_key, order_ids) {
 #'
 cancel_all_orders <- function(token, live = FALSE, account_key, ...) {
 
-  order_ids <- get_orders(token = token) %>%
+  order_ids <- get_orders(token = token, live = live) %>%
     dplyr::select(dplyr::ends_with("OrderId")) %>%
     dplyr::pull(1) %>%
     paste(collapse = ",")
