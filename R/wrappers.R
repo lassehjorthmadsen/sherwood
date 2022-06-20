@@ -1,32 +1,3 @@
-utils::globalVariables("where")
-
-#' Convert HTTP response to dataframe
-#'
-#' @param response A response object from {httr}
-#' @param remove_constant_cols Logical. Should columns with constant values be removed? Defaults to TRUE.
-#'
-#' @return Tibble with response content
-#' @export
-#'
-response_df <- function(response, remove_constant_cols = FALSE) {
-  df <- response %>%
-    httr::content(as = "text") %>%
-    jsonlite::fromJSON(flatten = T) %>%
-    purrr::compact() %>%
-    as.data.frame() %>%
-    dplyr::as_tibble() %>%
-    dplyr::mutate(dplyr::across(dplyr::ends_with(
-      c("LastUpdated", "EndTime", "StartTime", "OrderTime")
-    ), lubridate::as_datetime))
-
-  if (remove_constant_cols & nrow(df) > 1) {
-    df <- df %>% dplyr::select(where( ~ dplyr::n_distinct(.) > 1))
-  }
-
-  df
-}
-
-
 #' Get client details
 #'
 #' @param token either a character or a token2.0 reference class (RC) object
@@ -504,4 +475,111 @@ cancel_all_orders <- function(token, live = FALSE, account_key, ...) {
 
   cancel_all <- cancel_order(token = token, live = live, account_key = account_key, order_ids = order_ids, ...)
   cancel_all
+}
+
+
+#' Get option space for a given root id
+#'
+#' Returns the `$SpecificOptions` element of the `$OptionSpace`
+#' element of the response object from a call to `contractoptionspaces`
+#' endpoint.
+#'
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
+#' @param client_key character
+#' @param option_root_id numeric, id of the required option root
+#'
+#' @return tibble
+#' @export
+#'
+get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
+  if (live) {
+    url <-
+      paste0(
+        "https://gateway.saxobank.com/openapi/ref/v1/instruments/contractoptionspaces/",
+        option_root_id
+      )
+
+    r <- httr::GET(url = url,
+                   query = list(ClientKey = client_key, OptionSpaceSegment = "DefaultDates"),
+                   config = token
+                   )
+
+  } else {
+    url <-
+      paste0(
+        "https://gateway.saxobank.com/sim/openapi/ref/v1/instruments/contractoptionspaces/",
+        option_root_id
+      )
+
+    r <- httr::GET(url = url,
+                   query = list(ClientKey = client_key, OptionSpaceSegment = "DefaultDates",
+                                config = httr::add_headers(Authorization = token)
+                                )
+                   )
+  }
+
+  httr::stop_for_status(r)
+
+  specific_options <- r %>%
+    httr::content() %>%
+    purrr::pluck("OptionSpace") %>%
+    purrr::map(purrr::pluck, "SpecificOptions") %>%
+    dplyr::bind_rows() %>%
+    dplyr::filter(PutCall == "Call", TradingStatus == "Tradable")
+
+  specific_options
+}
+
+
+#' Create a price subscription on an instrument
+#'
+#' @param token
+#' @param live
+#' @param uic
+#' @param asset_type
+#'
+#' @return
+#' @export
+#'
+make_subscription <- function(token, live = FALSE, uic, asset_type) {
+  body <- list(
+    "Arguments" = list(
+      "Uic" = uic,
+      "AssetType" = asset_type,
+      "FieldGroups" = list(
+        "Commissions",
+        "PriceInfo",
+        "PriceInfoDetails",
+        "Quote",
+        "Greeks"
+      )
+    ),
+    "ContextId" = random_id(),
+    "ReferenceId" = random_id()
+  )
+
+  if (live) {
+    r <-
+      POST(
+        "https://gateway.saxobank.com/openapi/trade/v1/prices/subscriptions",
+        body = body,
+        config = token,
+        encode = "json"
+      )
+  } else {
+    r <-
+      POST(
+        "https://gateway.saxobank.com/sim/openapi/trade/v1/prices/subscriptions",
+        body = body,
+        config = httr::add_headers(Authorization = token),
+        encode = "json"
+      )
+  }
+
+  prices <- r %>% response_df()
+  prices
 }

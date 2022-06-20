@@ -12,7 +12,6 @@ my_token <- authorize_live()
 my_info <- get_client_info(token = my_token, live = TRUE)
 
 # My default key
-account_key <- my_info$DefaultAccountKey[1]
 client_key <- my_info$ClientKey[1]
 
 # EUREX: Largest European futures and options market
@@ -28,66 +27,29 @@ opt <- get_instruments(token = my_token, live = TRUE, exchange_id = "EUREX", ass
 root_id <- opt %>% filter(str_detect(Data.Description, "Heidelberger Cement AG")) %>% pull(Data.Identifier)
 
 # 3. Use root id to get option space from contractoptionspaces end point. Try option root = 572 :
-# Option space can be huge, so limit using OptionSpaceSegment parameter (how does that work, exactly?)
-r <- httr::GET("https://gateway.saxobank.com/openapi/ref/v1/instruments/contractoptionspaces/572",
-         query = list(ClientKey = client_key,
-                      OptionSpaceSegment = "DefaultDates",
-                      UnderlyingUic = "1"
-                      ),
-         config = my_token
-         )
+specific_options <-
+  get_optionspace(
+    token = my_token,
+    live = TRUE,
+    client_key = client_key,
+    option_root_id = root_id
+  )
 
-httr::http_status(r)
+# 4. Set up price subscription for example option
+example_option_uic <- specific_options$Uic[1]
 
-# 4. Examine response to find the option we need.
-specific_options <- r %>%
-  content() %>%
-  pluck("OptionSpace") %>%
-  map(pluck, "SpecificOptions") %>%
-  bind_rows()
+prices <-
+  make_subscription(
+    token = my_token,
+    live = TRUE,
+    uic = example_option_uic,
+    asset_type = "StockOption"
+  )
 
-dates <- r %>%
-  content() %>%
-  pluck("OptionSpace", 1)
+option <- specific_options %>%
+  inner_join(prices, by = c("Uic" = "Snapshot.Uic"))
 
-
-
-  map(pluck, "SpecificOptions") %>%
-  bind_rows() %>%
-  filter(PutCall == "Call", TradingStatus == "Tradable")
-
-
-
-
-# 5. Set up price subscription
-context_id <- c(letters, LETTERS, 0:9, "-") %>%
-  sample(size = 10, replace = TRUE) %>%
-  paste(collapse = "")
-
-reference_id <- c(letters, LETTERS, 0:9, "-") %>%
-  sample(size = 10, replace = TRUE) %>%
-  paste(collapse = "")
-
-
-body <- list(
-  "Arguments" = list(
-    "Uic" = 29510071,
-    "AssetType" = "StockOption",
-    "FieldGroups" = list("Commissions", "PriceInfo", "PriceInfoDetails", "Quote", "Greeks")
-  ),
-  "ContextId" = context_id,
-  "ReferenceId" = reference_id
-)
-
-r <- POST("https://gateway.saxobank.com/openapi/trade/v1/prices/subscriptions",
-          body = body,
-          config = my_token,
-          encode = "json"
-)
-
-http_status(r)
-content(r)
-response_df(r) %>% glimpse()
+option %>% glimpse()
 
 
 

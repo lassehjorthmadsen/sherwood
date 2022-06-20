@@ -1,0 +1,1816 @@
+$AmountDecimals
+[1] 0
+
+$AssetType
+[1] "StockOption"
+
+$CanParticipateInMultiLegOrder
+[1] FALSE
+
+$ContractSize
+[1] 100
+
+$CurrencyCode
+[1] "EUR"
+
+$DefaultAmount
+[1] 1
+
+$DefaultExpiry
+[1] "2022-07-15T00:00:00Z"
+
+$DefaultOption
+$DefaultOption$PutCall
+[1] "Call"
+
+$DefaultOption$StrikePrice
+[1] 51
+
+$DefaultOption$TradingStatus
+[1] "Tradable"
+
+$DefaultOption$Uic
+[1] 28643292
+
+$DefaultOption$UnderlyingUic
+[1] 1515
+
+
+$Description
+[1] "Heidelberger Cement AG"
+
+$Exchange
+$Exchange$CountryCode
+[1] "DE"
+
+$Exchange$ExchangeId
+[1] "EUREX"
+
+$Exchange$Name
+[1] "Eurex"
+
+$Exchange$TimeZoneId
+[1] "4"
+
+
+$ExerciseStyle
+[1] "American"
+
+$Format
+$Format$Decimals
+[1] 2
+
+$Format$OrderDecimals
+[1] 2
+
+$Format$StrikeDecimals
+[1] 2
+
+
+$GroupId
+[1] 0
+
+$IncrementSize
+[1] 1
+
+$IsTradable
+[1] TRUE
+
+$LotSize
+[1] 1
+
+$LotSizeType
+[1] "OddLotsNotAllowed"
+
+$OptionRootId
+[1] 572
+
+$OptionSpace
+$OptionSpace[[1]]
+$OptionSpace[[1]]$DisplayDaysToExpiry
+[1] 11
+
+$OptionSpace[[1]]$DisplayDaysToLastTradeDate
+[1] 25
+
+$OptionSpace[[1]]$DisplayExpiry
+[1] "2022-07-01"
+
+$OptionSpace[[1]]$Expiry
+[1] "2022-07-15"
+
+$OptionSpace[[1]]$LastTradeDate
+[1] "2022-07-15T15:30:00.000000Z"
+
+$OptionSpace[[1]]$SpecificOptions
+$OptionSpace[[1]]$SpecificOptions[[1]]
+$OptionSpace[[1]]$SpecificOptions[[1]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[1]]$StrikePrice
+[1] 0.01
+
+$OptionSpace[[1]]$SpecificOptions[[1]]$TradingStatus
+[1] "NonTradable"
+
+$OptionSpace[[1]]$SpecificOptions[[1]]$Uic
+[1] 29786850
+
+$OptionSpace[[1]]$SpecificOptions[[1]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[2]]
+$OptionSpace[[1]]$SpecificOptions[[2]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[2]]$StrikePrice
+[1] 38
+
+$OptionSpace[[1]]$SpecificOptions[[2]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[2]]$Uic
+[1] 29510073
+
+$OptionSpace[[1]]$SpecificOptions[[2]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[3]]
+$OptionSpace[[1]]$SpecificOptions[[3]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[3]]$StrikePrice
+[1] 38
+
+$OptionSpace[[1]]$SpecificOptions[[3]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[3]]$Uic
+[1] 29510071
+
+$OptionSpace[[1]]$SpecificOptions[[3]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[4]]
+$OptionSpace[[1]]$SpecificOptions[[4]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[4]]$StrikePrice
+[1] 43.5
+
+$OptionSpace[[1]]$SpecificOptions[[4]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[4]]$Uic
+[1] 29635874
+
+$OptionSpace[[1]]$SpecificOptions[[4]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[5]]
+$OptionSpace[[1]]$SpecificOptions[[5]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[5]]$StrikePrice
+[1] 43.5
+
+$OptionSpace[[1]]$SpecificOptions[[5]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[5]]$Uic
+[1] 29635872
+
+$OptionSpace[[1]]$SpecificOptions[[5]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[6]]
+$OptionSpace[[1]]$SpecificOptions[[6]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[6]]$StrikePrice
+[1] 44
+
+$OptionSpace[[1]]$SpecificOptions[[6]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[6]]$Uic
+[1] 29613314
+
+$OptionSpace[[1]]$SpecificOptions[[6]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[7]]
+$OptionSpace[[1]]$SpecificOptions[[7]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[7]]$StrikePrice
+[1] 44
+
+$OptionSpace[[1]]$SpecificOptions[[7]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[7]]$Uic
+[1] 29613308
+
+$OptionSpace[[1]]$SpecificOptions[[7]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[8]]
+$OptionSpace[[1]]$SpecificOptions[[8]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[8]]$StrikePrice
+[1] 44.5
+
+$OptionSpace[[1]]$SpecificOptions[[8]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[8]]$Uic
+[1] 29613316
+
+$OptionSpace[[1]]$SpecificOptions[[8]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[9]]
+$OptionSpace[[1]]$SpecificOptions[[9]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[9]]$StrikePrice
+[1] 44.5
+
+$OptionSpace[[1]]$SpecificOptions[[9]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[9]]$Uic
+[1] 29613312
+
+$OptionSpace[[1]]$SpecificOptions[[9]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[10]]
+$OptionSpace[[1]]$SpecificOptions[[10]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[10]]$StrikePrice
+[1] 45
+
+$OptionSpace[[1]]$SpecificOptions[[10]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[10]]$Uic
+[1] 29613306
+
+$OptionSpace[[1]]$SpecificOptions[[10]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[11]]
+$OptionSpace[[1]]$SpecificOptions[[11]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[11]]$StrikePrice
+[1] 45
+
+$OptionSpace[[1]]$SpecificOptions[[11]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[11]]$Uic
+[1] 29613311
+
+$OptionSpace[[1]]$SpecificOptions[[11]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[12]]
+$OptionSpace[[1]]$SpecificOptions[[12]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[12]]$StrikePrice
+[1] 45.5
+
+$OptionSpace[[1]]$SpecificOptions[[12]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[12]]$Uic
+[1] 28643305
+
+$OptionSpace[[1]]$SpecificOptions[[12]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[13]]
+$OptionSpace[[1]]$SpecificOptions[[13]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[13]]$StrikePrice
+[1] 45.5
+
+$OptionSpace[[1]]$SpecificOptions[[13]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[13]]$Uic
+[1] 28643279
+
+$OptionSpace[[1]]$SpecificOptions[[13]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[14]]
+$OptionSpace[[1]]$SpecificOptions[[14]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[14]]$StrikePrice
+[1] 46
+
+$OptionSpace[[1]]$SpecificOptions[[14]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[14]]$Uic
+[1] 28643307
+
+$OptionSpace[[1]]$SpecificOptions[[14]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[15]]
+$OptionSpace[[1]]$SpecificOptions[[15]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[15]]$StrikePrice
+[1] 46
+
+$OptionSpace[[1]]$SpecificOptions[[15]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[15]]$Uic
+[1] 28643281
+
+$OptionSpace[[1]]$SpecificOptions[[15]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[16]]
+$OptionSpace[[1]]$SpecificOptions[[16]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[16]]$StrikePrice
+[1] 46.5
+
+$OptionSpace[[1]]$SpecificOptions[[16]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[16]]$Uic
+[1] 28643306
+
+$OptionSpace[[1]]$SpecificOptions[[16]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[17]]
+$OptionSpace[[1]]$SpecificOptions[[17]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[17]]$StrikePrice
+[1] 46.5
+
+$OptionSpace[[1]]$SpecificOptions[[17]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[17]]$Uic
+[1] 28643282
+
+$OptionSpace[[1]]$SpecificOptions[[17]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[18]]
+$OptionSpace[[1]]$SpecificOptions[[18]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[18]]$StrikePrice
+[1] 47
+
+$OptionSpace[[1]]$SpecificOptions[[18]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[18]]$Uic
+[1] 28643309
+
+$OptionSpace[[1]]$SpecificOptions[[18]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[19]]
+$OptionSpace[[1]]$SpecificOptions[[19]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[19]]$StrikePrice
+[1] 47
+
+$OptionSpace[[1]]$SpecificOptions[[19]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[19]]$Uic
+[1] 28643284
+
+$OptionSpace[[1]]$SpecificOptions[[19]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[20]]
+$OptionSpace[[1]]$SpecificOptions[[20]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[20]]$StrikePrice
+[1] 47.5
+
+$OptionSpace[[1]]$SpecificOptions[[20]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[20]]$Uic
+[1] 28643310
+
+$OptionSpace[[1]]$SpecificOptions[[20]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[21]]
+$OptionSpace[[1]]$SpecificOptions[[21]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[21]]$StrikePrice
+[1] 47.5
+
+$OptionSpace[[1]]$SpecificOptions[[21]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[21]]$Uic
+[1] 28643285
+
+$OptionSpace[[1]]$SpecificOptions[[21]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[22]]
+$OptionSpace[[1]]$SpecificOptions[[22]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[22]]$StrikePrice
+[1] 48
+
+$OptionSpace[[1]]$SpecificOptions[[22]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[22]]$Uic
+[1] 28643308
+
+$OptionSpace[[1]]$SpecificOptions[[22]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[23]]
+$OptionSpace[[1]]$SpecificOptions[[23]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[23]]$StrikePrice
+[1] 48
+
+$OptionSpace[[1]]$SpecificOptions[[23]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[23]]$Uic
+[1] 28643283
+
+$OptionSpace[[1]]$SpecificOptions[[23]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[24]]
+$OptionSpace[[1]]$SpecificOptions[[24]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[24]]$StrikePrice
+[1] 48.5
+
+$OptionSpace[[1]]$SpecificOptions[[24]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[24]]$Uic
+[1] 28643312
+
+$OptionSpace[[1]]$SpecificOptions[[24]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[25]]
+$OptionSpace[[1]]$SpecificOptions[[25]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[25]]$StrikePrice
+[1] 48.5
+
+$OptionSpace[[1]]$SpecificOptions[[25]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[25]]$Uic
+[1] 28643287
+
+$OptionSpace[[1]]$SpecificOptions[[25]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[26]]
+$OptionSpace[[1]]$SpecificOptions[[26]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[26]]$StrikePrice
+[1] 49
+
+$OptionSpace[[1]]$SpecificOptions[[26]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[26]]$Uic
+[1] 28643313
+
+$OptionSpace[[1]]$SpecificOptions[[26]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[27]]
+$OptionSpace[[1]]$SpecificOptions[[27]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[27]]$StrikePrice
+[1] 49
+
+$OptionSpace[[1]]$SpecificOptions[[27]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[27]]$Uic
+[1] 28643288
+
+$OptionSpace[[1]]$SpecificOptions[[27]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[28]]
+$OptionSpace[[1]]$SpecificOptions[[28]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[28]]$StrikePrice
+[1] 49.5
+
+$OptionSpace[[1]]$SpecificOptions[[28]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[28]]$Uic
+[1] 28643311
+
+$OptionSpace[[1]]$SpecificOptions[[28]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[29]]
+$OptionSpace[[1]]$SpecificOptions[[29]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[29]]$StrikePrice
+[1] 49.5
+
+$OptionSpace[[1]]$SpecificOptions[[29]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[29]]$Uic
+[1] 28643286
+
+$OptionSpace[[1]]$SpecificOptions[[29]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[30]]
+$OptionSpace[[1]]$SpecificOptions[[30]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[30]]$StrikePrice
+[1] 50
+
+$OptionSpace[[1]]$SpecificOptions[[30]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[30]]$Uic
+[1] 28643315
+
+$OptionSpace[[1]]$SpecificOptions[[30]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[31]]
+$OptionSpace[[1]]$SpecificOptions[[31]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[31]]$StrikePrice
+[1] 50
+
+$OptionSpace[[1]]$SpecificOptions[[31]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[31]]$Uic
+[1] 28643290
+
+$OptionSpace[[1]]$SpecificOptions[[31]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[32]]
+$OptionSpace[[1]]$SpecificOptions[[32]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[32]]$StrikePrice
+[1] 50.5
+
+$OptionSpace[[1]]$SpecificOptions[[32]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[32]]$Uic
+[1] 28643316
+
+$OptionSpace[[1]]$SpecificOptions[[32]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[33]]
+$OptionSpace[[1]]$SpecificOptions[[33]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[33]]$StrikePrice
+[1] 50.5
+
+$OptionSpace[[1]]$SpecificOptions[[33]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[33]]$Uic
+[1] 28643289
+
+$OptionSpace[[1]]$SpecificOptions[[33]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[34]]
+$OptionSpace[[1]]$SpecificOptions[[34]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[34]]$StrikePrice
+[1] 51
+
+$OptionSpace[[1]]$SpecificOptions[[34]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[34]]$Uic
+[1] 28643314
+
+$OptionSpace[[1]]$SpecificOptions[[34]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[35]]
+$OptionSpace[[1]]$SpecificOptions[[35]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[35]]$StrikePrice
+[1] 51
+
+$OptionSpace[[1]]$SpecificOptions[[35]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[35]]$Uic
+[1] 28643292
+
+$OptionSpace[[1]]$SpecificOptions[[35]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[36]]
+$OptionSpace[[1]]$SpecificOptions[[36]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[36]]$StrikePrice
+[1] 51.5
+
+$OptionSpace[[1]]$SpecificOptions[[36]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[36]]$Uic
+[1] 28643318
+
+$OptionSpace[[1]]$SpecificOptions[[36]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[37]]
+$OptionSpace[[1]]$SpecificOptions[[37]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[37]]$StrikePrice
+[1] 51.5
+
+$OptionSpace[[1]]$SpecificOptions[[37]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[37]]$Uic
+[1] 28643291
+
+$OptionSpace[[1]]$SpecificOptions[[37]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[38]]
+$OptionSpace[[1]]$SpecificOptions[[38]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[38]]$StrikePrice
+[1] 52
+
+$OptionSpace[[1]]$SpecificOptions[[38]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[38]]$Uic
+[1] 28643319
+
+$OptionSpace[[1]]$SpecificOptions[[38]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[39]]
+$OptionSpace[[1]]$SpecificOptions[[39]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[39]]$StrikePrice
+[1] 52
+
+$OptionSpace[[1]]$SpecificOptions[[39]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[39]]$Uic
+[1] 28643293
+
+$OptionSpace[[1]]$SpecificOptions[[39]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[40]]
+$OptionSpace[[1]]$SpecificOptions[[40]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[40]]$StrikePrice
+[1] 53
+
+$OptionSpace[[1]]$SpecificOptions[[40]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[40]]$Uic
+[1] 28643317
+
+$OptionSpace[[1]]$SpecificOptions[[40]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[41]]
+$OptionSpace[[1]]$SpecificOptions[[41]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[41]]$StrikePrice
+[1] 53
+
+$OptionSpace[[1]]$SpecificOptions[[41]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[41]]$Uic
+[1] 28643294
+
+$OptionSpace[[1]]$SpecificOptions[[41]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[42]]
+$OptionSpace[[1]]$SpecificOptions[[42]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[42]]$StrikePrice
+[1] 54
+
+$OptionSpace[[1]]$SpecificOptions[[42]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[42]]$Uic
+[1] 28643322
+
+$OptionSpace[[1]]$SpecificOptions[[42]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[43]]
+$OptionSpace[[1]]$SpecificOptions[[43]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[43]]$StrikePrice
+[1] 54
+
+$OptionSpace[[1]]$SpecificOptions[[43]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[43]]$Uic
+[1] 28643295
+
+$OptionSpace[[1]]$SpecificOptions[[43]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[44]]
+$OptionSpace[[1]]$SpecificOptions[[44]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[44]]$StrikePrice
+[1] 55
+
+$OptionSpace[[1]]$SpecificOptions[[44]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[44]]$Uic
+[1] 28643321
+
+$OptionSpace[[1]]$SpecificOptions[[44]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[45]]
+$OptionSpace[[1]]$SpecificOptions[[45]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[45]]$StrikePrice
+[1] 55
+
+$OptionSpace[[1]]$SpecificOptions[[45]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[45]]$Uic
+[1] 28643297
+
+$OptionSpace[[1]]$SpecificOptions[[45]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[46]]
+$OptionSpace[[1]]$SpecificOptions[[46]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[46]]$StrikePrice
+[1] 56
+
+$OptionSpace[[1]]$SpecificOptions[[46]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[46]]$Uic
+[1] 28643320
+
+$OptionSpace[[1]]$SpecificOptions[[46]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[47]]
+$OptionSpace[[1]]$SpecificOptions[[47]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[47]]$StrikePrice
+[1] 56
+
+$OptionSpace[[1]]$SpecificOptions[[47]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[47]]$Uic
+[1] 28643296
+
+$OptionSpace[[1]]$SpecificOptions[[47]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[48]]
+$OptionSpace[[1]]$SpecificOptions[[48]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[48]]$StrikePrice
+[1] 57
+
+$OptionSpace[[1]]$SpecificOptions[[48]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[48]]$Uic
+[1] 28643323
+
+$OptionSpace[[1]]$SpecificOptions[[48]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[49]]
+$OptionSpace[[1]]$SpecificOptions[[49]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[49]]$StrikePrice
+[1] 57
+
+$OptionSpace[[1]]$SpecificOptions[[49]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[49]]$Uic
+[1] 28643299
+
+$OptionSpace[[1]]$SpecificOptions[[49]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[50]]
+$OptionSpace[[1]]$SpecificOptions[[50]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[50]]$StrikePrice
+[1] 58
+
+$OptionSpace[[1]]$SpecificOptions[[50]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[50]]$Uic
+[1] 28643324
+
+$OptionSpace[[1]]$SpecificOptions[[50]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[51]]
+$OptionSpace[[1]]$SpecificOptions[[51]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[51]]$StrikePrice
+[1] 58
+
+$OptionSpace[[1]]$SpecificOptions[[51]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[51]]$Uic
+[1] 28643298
+
+$OptionSpace[[1]]$SpecificOptions[[51]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[52]]
+$OptionSpace[[1]]$SpecificOptions[[52]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[52]]$StrikePrice
+[1] 59
+
+$OptionSpace[[1]]$SpecificOptions[[52]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[52]]$Uic
+[1] 28643326
+
+$OptionSpace[[1]]$SpecificOptions[[52]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[53]]
+$OptionSpace[[1]]$SpecificOptions[[53]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[53]]$StrikePrice
+[1] 59
+
+$OptionSpace[[1]]$SpecificOptions[[53]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[53]]$Uic
+[1] 28643301
+
+$OptionSpace[[1]]$SpecificOptions[[53]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[54]]
+$OptionSpace[[1]]$SpecificOptions[[54]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[54]]$StrikePrice
+[1] 60
+
+$OptionSpace[[1]]$SpecificOptions[[54]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[54]]$Uic
+[1] 28643325
+
+$OptionSpace[[1]]$SpecificOptions[[54]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[55]]
+$OptionSpace[[1]]$SpecificOptions[[55]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[55]]$StrikePrice
+[1] 60
+
+$OptionSpace[[1]]$SpecificOptions[[55]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[55]]$Uic
+[1] 28643300
+
+$OptionSpace[[1]]$SpecificOptions[[55]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[56]]
+$OptionSpace[[1]]$SpecificOptions[[56]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[56]]$StrikePrice
+[1] 61
+
+$OptionSpace[[1]]$SpecificOptions[[56]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[56]]$Uic
+[1] 28643328
+
+$OptionSpace[[1]]$SpecificOptions[[56]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[57]]
+$OptionSpace[[1]]$SpecificOptions[[57]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[57]]$StrikePrice
+[1] 61
+
+$OptionSpace[[1]]$SpecificOptions[[57]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[57]]$Uic
+[1] 28643303
+
+$OptionSpace[[1]]$SpecificOptions[[57]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[58]]
+$OptionSpace[[1]]$SpecificOptions[[58]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[58]]$StrikePrice
+[1] 62
+
+$OptionSpace[[1]]$SpecificOptions[[58]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[58]]$Uic
+[1] 28643327
+
+$OptionSpace[[1]]$SpecificOptions[[58]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[59]]
+$OptionSpace[[1]]$SpecificOptions[[59]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[59]]$StrikePrice
+[1] 62
+
+$OptionSpace[[1]]$SpecificOptions[[59]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[59]]$Uic
+[1] 28643302
+
+$OptionSpace[[1]]$SpecificOptions[[59]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[60]]
+$OptionSpace[[1]]$SpecificOptions[[60]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[60]]$StrikePrice
+[1] 63
+
+$OptionSpace[[1]]$SpecificOptions[[60]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[60]]$Uic
+[1] 28643329
+
+$OptionSpace[[1]]$SpecificOptions[[60]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[61]]
+$OptionSpace[[1]]$SpecificOptions[[61]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[61]]$StrikePrice
+[1] 63
+
+$OptionSpace[[1]]$SpecificOptions[[61]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[61]]$Uic
+[1] 28643304
+
+$OptionSpace[[1]]$SpecificOptions[[61]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[62]]
+$OptionSpace[[1]]$SpecificOptions[[62]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[62]]$StrikePrice
+[1] 64
+
+$OptionSpace[[1]]$SpecificOptions[[62]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[62]]$Uic
+[1] 28650300
+
+$OptionSpace[[1]]$SpecificOptions[[62]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[63]]
+$OptionSpace[[1]]$SpecificOptions[[63]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[63]]$StrikePrice
+[1] 64
+
+$OptionSpace[[1]]$SpecificOptions[[63]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[63]]$Uic
+[1] 28650299
+
+$OptionSpace[[1]]$SpecificOptions[[63]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[64]]
+$OptionSpace[[1]]$SpecificOptions[[64]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[64]]$StrikePrice
+[1] 65
+
+$OptionSpace[[1]]$SpecificOptions[[64]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[64]]$Uic
+[1] 28650301
+
+$OptionSpace[[1]]$SpecificOptions[[64]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[65]]
+$OptionSpace[[1]]$SpecificOptions[[65]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[65]]$StrikePrice
+[1] 65
+
+$OptionSpace[[1]]$SpecificOptions[[65]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[65]]$Uic
+[1] 28650298
+
+$OptionSpace[[1]]$SpecificOptions[[65]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[66]]
+$OptionSpace[[1]]$SpecificOptions[[66]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[66]]$StrikePrice
+[1] 66
+
+$OptionSpace[[1]]$SpecificOptions[[66]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[66]]$Uic
+[1] 28693119
+
+$OptionSpace[[1]]$SpecificOptions[[66]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[67]]
+$OptionSpace[[1]]$SpecificOptions[[67]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[67]]$StrikePrice
+[1] 66
+
+$OptionSpace[[1]]$SpecificOptions[[67]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[67]]$Uic
+[1] 28693118
+
+$OptionSpace[[1]]$SpecificOptions[[67]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[68]]
+$OptionSpace[[1]]$SpecificOptions[[68]]$PutCall
+[1] "Put"
+
+$OptionSpace[[1]]$SpecificOptions[[68]]$StrikePrice
+[1] 67
+
+$OptionSpace[[1]]$SpecificOptions[[68]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[68]]$Uic
+[1] 28859312
+
+$OptionSpace[[1]]$SpecificOptions[[68]]$UnderlyingUic
+[1] 1515
+
+
+$OptionSpace[[1]]$SpecificOptions[[69]]
+$OptionSpace[[1]]$SpecificOptions[[69]]$PutCall
+[1] "Call"
+
+$OptionSpace[[1]]$SpecificOptions[[69]]$StrikePrice
+[1] 67
+
+$OptionSpace[[1]]$SpecificOptions[[69]]$TradingStatus
+[1] "Tradable"
+
+$OptionSpace[[1]]$SpecificOptions[[69]]$Uic
+[1] 28859311
+
+$OptionSpace[[1]]$SpecificOptions[[69]]$UnderlyingUic
+[1] 1515
+
+
+
+$OptionSpace[[1]]$TickSizeScheme
+$OptionSpace[[1]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[1]]$TickSizeScheme$Elements
+$OptionSpace[[1]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[1]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[1]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[2]]
+$OptionSpace[[2]]$DisplayDaysToExpiry
+[1] 42
+
+$OptionSpace[[2]]$DisplayDaysToLastTradeDate
+[1] 60
+
+$OptionSpace[[2]]$DisplayExpiry
+[1] "2022-08-01"
+
+$OptionSpace[[2]]$Expiry
+[1] "2022-08-19"
+
+$OptionSpace[[2]]$LastTradeDate
+[1] "2022-08-19T15:30:00.000000Z"
+
+$OptionSpace[[2]]$TickSizeScheme
+$OptionSpace[[2]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[2]]$TickSizeScheme$Elements
+$OptionSpace[[2]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[2]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[2]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[3]]
+$OptionSpace[[3]]$DisplayDaysToExpiry
+[1] 73
+
+$OptionSpace[[3]]$DisplayDaysToLastTradeDate
+[1] 88
+
+$OptionSpace[[3]]$DisplayExpiry
+[1] "2022-09-01"
+
+$OptionSpace[[3]]$Expiry
+[1] "2022-09-16"
+
+$OptionSpace[[3]]$LastTradeDate
+[1] "2022-09-16T15:30:00.000000Z"
+
+$OptionSpace[[3]]$TickSizeScheme
+$OptionSpace[[3]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[3]]$TickSizeScheme$Elements
+$OptionSpace[[3]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[3]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[3]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[4]]
+$OptionSpace[[4]]$DisplayDaysToExpiry
+[1] 164
+
+$OptionSpace[[4]]$DisplayDaysToLastTradeDate
+[1] 179
+
+$OptionSpace[[4]]$DisplayExpiry
+[1] "2022-12-01"
+
+$OptionSpace[[4]]$Expiry
+[1] "2022-12-16"
+
+$OptionSpace[[4]]$LastTradeDate
+[1] "2022-12-16T16:30:00.000000Z"
+
+$OptionSpace[[4]]$TickSizeScheme
+$OptionSpace[[4]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[4]]$TickSizeScheme$Elements
+$OptionSpace[[4]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[4]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[4]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[5]]
+$OptionSpace[[5]]$DisplayDaysToExpiry
+[1] 254
+
+$OptionSpace[[5]]$DisplayDaysToLastTradeDate
+[1] 270
+
+$OptionSpace[[5]]$DisplayExpiry
+[1] "2023-03-01"
+
+$OptionSpace[[5]]$Expiry
+[1] "2023-03-17"
+
+$OptionSpace[[5]]$LastTradeDate
+[1] "2023-03-17T16:30:00.000000Z"
+
+$OptionSpace[[5]]$TickSizeScheme
+$OptionSpace[[5]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[5]]$TickSizeScheme$Elements
+$OptionSpace[[5]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[5]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[5]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[6]]
+$OptionSpace[[6]]$DisplayDaysToExpiry
+[1] 346
+
+$OptionSpace[[6]]$DisplayDaysToLastTradeDate
+[1] 361
+
+$OptionSpace[[6]]$DisplayExpiry
+[1] "2023-06-01"
+
+$OptionSpace[[6]]$Expiry
+[1] "2023-06-16"
+
+$OptionSpace[[6]]$LastTradeDate
+[1] "2023-06-16T15:30:00.000000Z"
+
+$OptionSpace[[6]]$TickSizeScheme
+$OptionSpace[[6]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[6]]$TickSizeScheme$Elements
+$OptionSpace[[6]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[6]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[6]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[7]]
+$OptionSpace[[7]]$DisplayDaysToExpiry
+[1] 529
+
+$OptionSpace[[7]]$DisplayDaysToLastTradeDate
+[1] 543
+
+$OptionSpace[[7]]$DisplayExpiry
+[1] "2023-12-01"
+
+$OptionSpace[[7]]$Expiry
+[1] "2023-12-15"
+
+$OptionSpace[[7]]$LastTradeDate
+[1] "2023-12-15T16:30:00.000000Z"
+
+$OptionSpace[[7]]$TickSizeScheme
+$OptionSpace[[7]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[7]]$TickSizeScheme$Elements
+$OptionSpace[[7]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[7]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[7]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[8]]
+$OptionSpace[[8]]$DisplayDaysToExpiry
+[1] 712
+
+$OptionSpace[[8]]$DisplayDaysToLastTradeDate
+[1] 732
+
+$OptionSpace[[8]]$DisplayExpiry
+[1] "2024-06-01"
+
+$OptionSpace[[8]]$Expiry
+[1] "2024-06-21"
+
+$OptionSpace[[8]]$LastTradeDate
+[1] "2024-06-21T16:30:00.000000Z"
+
+$OptionSpace[[8]]$TickSizeScheme
+$OptionSpace[[8]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[8]]$TickSizeScheme$Elements
+$OptionSpace[[8]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[8]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[8]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[9]]
+$OptionSpace[[9]]$DisplayDaysToExpiry
+[1] 895
+
+$OptionSpace[[9]]$DisplayDaysToLastTradeDate
+[1] 914
+
+$OptionSpace[[9]]$DisplayExpiry
+[1] "2024-12-01"
+
+$OptionSpace[[9]]$Expiry
+[1] "2024-12-20"
+
+$OptionSpace[[9]]$LastTradeDate
+[1] "2024-12-20T16:30:00.000000Z"
+
+$OptionSpace[[9]]$TickSizeScheme
+$OptionSpace[[9]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[9]]$TickSizeScheme$Elements
+$OptionSpace[[9]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[9]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[9]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[10]]
+$OptionSpace[[10]]$DisplayDaysToExpiry
+[1] 1077
+
+$OptionSpace[[10]]$DisplayDaysToLastTradeDate
+[1] 1096
+
+$OptionSpace[[10]]$DisplayExpiry
+[1] "2025-06-01"
+
+$OptionSpace[[10]]$Expiry
+[1] "2025-06-20"
+
+$OptionSpace[[10]]$LastTradeDate
+[1] "2025-06-20T16:30:00.000000Z"
+
+$OptionSpace[[10]]$TickSizeScheme
+$OptionSpace[[10]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[10]]$TickSizeScheme$Elements
+$OptionSpace[[10]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[10]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[10]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[11]]
+$OptionSpace[[11]]$DisplayDaysToExpiry
+[1] 1260
+
+$OptionSpace[[11]]$DisplayDaysToLastTradeDate
+[1] 1278
+
+$OptionSpace[[11]]$DisplayExpiry
+[1] "2025-12-01"
+
+$OptionSpace[[11]]$Expiry
+[1] "2025-12-19"
+
+$OptionSpace[[11]]$LastTradeDate
+[1] "2025-12-19T16:30:00.000000Z"
+
+$OptionSpace[[11]]$TickSizeScheme
+$OptionSpace[[11]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[11]]$TickSizeScheme$Elements
+$OptionSpace[[11]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[11]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[11]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+$OptionSpace[[12]]
+$OptionSpace[[12]]$DisplayDaysToExpiry
+[1] 1625
+
+$OptionSpace[[12]]$DisplayDaysToLastTradeDate
+[1] 1642
+
+$OptionSpace[[12]]$DisplayExpiry
+[1] "2026-12-01"
+
+$OptionSpace[[12]]$Expiry
+[1] "2026-12-18"
+
+$OptionSpace[[12]]$LastTradeDate
+[1] "2026-12-18T16:30:00.000000Z"
+
+$OptionSpace[[12]]$TickSizeScheme
+$OptionSpace[[12]]$TickSizeScheme$DefaultTickSize
+[1] 0.05
+
+$OptionSpace[[12]]$TickSizeScheme$Elements
+$OptionSpace[[12]]$TickSizeScheme$Elements[[1]]
+$OptionSpace[[12]]$TickSizeScheme$Elements[[1]]$HighPrice
+[1] 4.99
+
+$OptionSpace[[12]]$TickSizeScheme$Elements[[1]]$TickSize
+[1] 0.01
+
+
+
+
+
+
+$OrderDistances
+$OrderDistances$EntryDefaultDistance
+[1] 0
+
+$OrderDistances$EntryDefaultDistanceType
+[1] "Percentage"
+
+$OrderDistances$LimitDefaultDistance
+[1] 0
+
+$OrderDistances$LimitDefaultDistanceType
+[1] "Percentage"
+
+$OrderDistances$StopLimitDefaultDistance
+[1] 5
+
+$OrderDistances$StopLimitDefaultDistanceType
+[1] "Pips"
+
+$OrderDistances$StopLossDefaultDistance
+[1] 0.5
+
+$OrderDistances$StopLossDefaultDistanceType
+[1] "Percentage"
+
+$OrderDistances$StopLossDefaultEnabled
+[1] FALSE
+
+$OrderDistances$StopLossDefaultOrderType
+[1] "Stop"
+
+$OrderDistances$TakeProfitDefaultDistance
+[1] 0.5
+
+$OrderDistances$TakeProfitDefaultDistanceType
+[1] "Percentage"
+
+$OrderDistances$TakeProfitDefaultEnabled
+[1] FALSE
+
+
+$PriceToContractFactor
+[1] 100
+
+$RelatedInstruments
+$RelatedInstruments[[1]]
+$RelatedInstruments[[1]]$AssetType
+[1] "CfdOnStock"
+
+$RelatedInstruments[[1]]$Uic
+[1] 1515
+
+
+$RelatedInstruments[[2]]
+$RelatedInstruments[[2]]$AssetType
+[1] "Bond"
+
+$RelatedInstruments[[2]]$Uic
+[1] 5790635
+
+
+$RelatedInstruments[[3]]
+$RelatedInstruments[[3]]$AssetType
+[1] "Stock"
+
+$RelatedInstruments[[3]]$Uic
+[1] 1515
+
+
+
+$RelatedOptionRoots
+list()
+
+$SettlementStyle
+[1] "PhysicalDelivery"
+
+$StandardAmounts
+$StandardAmounts[[1]]
+[1] 1
+
+$StandardAmounts[[2]]
+[1] 5
+
+$StandardAmounts[[3]]
+[1] 10
+
+$StandardAmounts[[4]]
+[1] 25
+
+$StandardAmounts[[5]]
+[1] 50
+
+$StandardAmounts[[6]]
+[1] 100
+
+$StandardAmounts[[7]]
+[1] 500
+
+$StandardAmounts[[8]]
+[1] 1000
+
+
+$SupportedOrderTypes
+$SupportedOrderTypes[[1]]
+[1] "Limit"
+
+
+$SupportedStrategies
+$SupportedStrategies[[1]]
+[1] "Custom"
+
+$SupportedStrategies[[2]]
+[1] "Vertical"
+
+$SupportedStrategies[[3]]
+[1] "BackRatio"
+
+$SupportedStrategies[[4]]
+[1] "Diagonal"
+
+$SupportedStrategies[[5]]
+[1] "Condor"
+
+$SupportedStrategies[[6]]
+[1] "Butterfly"
+
+$SupportedStrategies[[7]]
+[1] "IronButterfly"
+
+$SupportedStrategies[[8]]
+[1] "IronCondor"
+
+$SupportedStrategies[[9]]
+[1] "Straddle"
+
+$SupportedStrategies[[10]]
+[1] "Strangle"
+
+$SupportedStrategies[[11]]
+[1] "RiskReversal"
+
+$SupportedStrategies[[12]]
+[1] "CalendarSpread"
+
+$SupportedStrategies[[13]]
+[1] "Gut"
+
+$SupportedStrategies[[14]]
+[1] "Synthetic"
+
+$SupportedStrategies[[15]]
+[1] "Combo"
+
+
+$Symbol
+[1] "HEI:xeur"
+
+$TickSize
+[1] 0.01
+
+$TradableOn
+$TradableOn[[1]]
+[1] "673776INET"
+
+
+$UnderlyingAssetType
+[1] "Stock"
+
