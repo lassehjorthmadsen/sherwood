@@ -37,7 +37,6 @@ r <- httr::GET("https://gateway.saxobank.com/openapi/ref/v1/instruments/contract
          config = my_token
          )
 
-
 httr::http_status(r)
 
 # 4. Examine response to find the option we need.
@@ -45,8 +44,20 @@ specific_options <- r %>%
   content() %>%
   pluck("OptionSpace") %>%
   map(pluck, "SpecificOptions") %>%
+  bind_rows()
+
+dates <- r %>%
+  content() %>%
+  pluck("OptionSpace", 1)
+
+
+
+  map(pluck, "SpecificOptions") %>%
   bind_rows() %>%
   filter(PutCall == "Call", TradingStatus == "Tradable")
+
+
+
 
 # 5. Set up price subscription
 context_id <- c(letters, LETTERS, 0:9, "-") %>%
@@ -57,27 +68,27 @@ reference_id <- c(letters, LETTERS, 0:9, "-") %>%
   sample(size = 10, replace = TRUE) %>%
   paste(collapse = "")
 
+
 body <- list(
-  "Arguments" = list("Uic" = 16829451,
-                     "AssetType" = "StockOption"),
-  "ContextId" = "explorer_1655456847440",
-  "ReferenceId" = "K_241"
+  "Arguments" = list(
+    "Uic" = 29510071,
+    "AssetType" = "StockOption",
+    "FieldGroups" = list("Commissions", "PriceInfo", "PriceInfoDetails", "Quote", "Greeks")
+  ),
+  "ContextId" = context_id,
+  "ReferenceId" = reference_id
 )
 
 r <- POST("https://gateway.saxobank.com/openapi/trade/v1/prices/subscriptions",
-          write_stream(function(x) {
-            print(length(x))
-            length(x)
-          }),
           body = body,
           config = my_token,
           encode = "json"
 )
 
 http_status(r)
-
 content(r)
-response_df(r)
+response_df(r) %>% glimpse()
+
 
 
 
