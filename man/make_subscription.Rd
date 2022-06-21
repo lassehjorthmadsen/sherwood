@@ -7,10 +7,19 @@
 make_subscription(token, live = FALSE, uic, asset_type)
 }
 \arguments{
-\item{asset_type}{}
+\item{token}{either a character or a token2.0 reference class (RC) object
+as returned by \code{httr::oauth2.0_token()}. Sim environment uses character,
+(a '24 hour token'); live environment a token object.}
+
+\item{live}{boolean, TRUE for live environment, i.e. real money.
+Defaults to FALSE, i.e. simulation environment.}
+
+\item{uic}{character, instrument identifier}
+
+\item{asset_type}{character, type of asset, e.g. "Stock" or "StockOption"}
 }
 \value{
-
+tibble
 }
 \description{
 Create a price subscription on an instrument

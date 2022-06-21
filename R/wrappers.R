@@ -143,7 +143,7 @@ get_instruments <- function(token, live = FALSE, exchange_id = "CSE", asset_type
 #' @param live boolean, TRUE for live environment, i.e. real money.
 #' Defaults to FALSE, i.e. simulation environment.
 #' @param uics character, comma separated list of identifiers
-#' @param asset_type character, defaults to "stock"
+#' @param asset_type character, type of asset, e.g. "Stock" or "StockOption"
 #' @param amount numeric, defaults to 10000
 #' @param ... parameters passed on to `response_df()`
 #'
@@ -182,7 +182,7 @@ get_info_prices <- function(token, live = FALSE, uics, asset_type = "Stock", amo
 #' @param live boolean, TRUE for live environment, i.e. real money.
 #' Defaults to FALSE, i.e. simulation environment.
 #' @param uics character, comma separated list of identifiers
-#' @param asset_type character, defaults to "stock"
+#' @param asset_type character, type of asset, e.g. "Stock" or "StockOption"
 #' @param ... parameters passed on to `response_df()`
 #'
 #' @return
@@ -217,7 +217,7 @@ get_details <- function(token, live = FALSE, uics, asset_type = "Stock", ...) {
 #' @param live boolean, TRUE for live environment, i.e. real money.
 #' Defaults to FALSE, i.e. simulation environment.
 #' @param uic character, instrument identifier
-#' @param asset_type character, type of asset
+#' @param asset_type character, type of asset, e.g. "Stock" or "StockOption"
 #' @param ... parameters passed on to `response_df()`
 #'
 #' @return tibble with trading schedule
@@ -484,6 +484,8 @@ cancel_all_orders <- function(token, live = FALSE, account_key, ...) {
 #' element of the response object from a call to `contractoptionspaces`
 #' endpoint.
 #'
+#' @importFrom rlang .data
+#'
 #' @param token either a character or a token2.0 reference class (RC) object
 #' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
 #' (a '24 hour token'); live environment a token object.
@@ -493,6 +495,7 @@ cancel_all_orders <- function(token, live = FALSE, account_key, ...) {
 #' @param option_root_id numeric, id of the required option root
 #'
 #' @return tibble
+#'
 #' @export
 #'
 get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
@@ -529,7 +532,7 @@ get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
     purrr::pluck("OptionSpace") %>%
     purrr::map(purrr::pluck, "SpecificOptions") %>%
     dplyr::bind_rows() %>%
-    dplyr::filter(PutCall == "Call", TradingStatus == "Tradable")
+    dplyr::filter(.data$PutCall == "Call", .data$TradingStatus == "Tradable")
 
   specific_options
 }
@@ -537,12 +540,15 @@ get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
 
 #' Create a price subscription on an instrument
 #'
-#' @param token
-#' @param live
-#' @param uic
-#' @param asset_type
+#' @param token either a character or a token2.0 reference class (RC) object
+#' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
+#' (a '24 hour token'); live environment a token object.
+#' @param live boolean, TRUE for live environment, i.e. real money.
+#' Defaults to FALSE, i.e. simulation environment.
+#' @param uic character, instrument identifier
+#' @param asset_type character, type of asset, e.g. "Stock" or "StockOption"
 #'
-#' @return
+#' @return tibble
 #' @export
 #'
 make_subscription <- function(token, live = FALSE, uic, asset_type) {
@@ -564,7 +570,7 @@ make_subscription <- function(token, live = FALSE, uic, asset_type) {
 
   if (live) {
     r <-
-      POST(
+      httr::POST(
         "https://gateway.saxobank.com/openapi/trade/v1/prices/subscriptions",
         body = body,
         config = token,
@@ -572,7 +578,7 @@ make_subscription <- function(token, live = FALSE, uic, asset_type) {
       )
   } else {
     r <-
-      POST(
+      httr::POST(
         "https://gateway.saxobank.com/sim/openapi/trade/v1/prices/subscriptions",
         body = body,
         config = httr::add_headers(Authorization = token),

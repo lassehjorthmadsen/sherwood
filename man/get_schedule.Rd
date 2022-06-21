@@ -16,7 +16,7 @@ Defaults to FALSE, i.e. simulation environment.}
 
 \item{uic}{character, instrument identifier}
 
-\item{asset_type}{character, type of asset}
+\item{asset_type}{character, type of asset, e.g. "Stock" or "StockOption"}
 
 \item{...}{parameters passed on to \code{response_df()}}
 }

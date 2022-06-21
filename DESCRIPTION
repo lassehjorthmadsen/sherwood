@@ -1,15 +1,17 @@
 Package: sherwood
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Provides Wrapper Functions for Saxo Banks OpenAPI
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Lasse H. Madsen
+Maintainer: Lasse H. Madsen <lassehjorthmadsen@gmail.com>
+Description: Enable you to fetch information on prices and 
+    more for financial instruments offered by Saxo Bank.
+    And you can trade too, in simulation or for real money.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Suggests: 
+    roxygen2,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Roxygen: list(markdown = TRUE)
@@ -21,4 +23,5 @@ Imports:
     jsonlite,
     magrittr,
     tidyselect,
-    purrr
+    purrr,
+    rlang (>= 0.1.2)

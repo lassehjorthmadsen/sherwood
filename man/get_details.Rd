@@ -16,7 +16,7 @@ Defaults to FALSE, i.e. simulation environment.}
 
 \item{uics}{character, comma separated list of identifiers}
 
-\item{asset_type}{character, defaults to "stock"}
+\item{asset_type}{character, type of asset, e.g. "Stock" or "StockOption"}
 
 \item{...}{parameters passed on to \code{response_df()}}
 }
