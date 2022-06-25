@@ -24,4 +24,5 @@ Imports:
     magrittr,
     tidyselect,
     purrr,
-    rlang (>= 0.1.2)
+    rlang (>= 0.1.2),
+    tibble

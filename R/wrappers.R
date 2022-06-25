@@ -485,6 +485,7 @@ cancel_all_orders <- function(token, live = FALSE, account_key, ...) {
 #' endpoint.
 #'
 #' @importFrom rlang .data
+#' @importFrom tibble rowid_to_column
 #'
 #' @param token either a character or a token2.0 reference class (RC) object
 #' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
@@ -534,14 +535,14 @@ get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
   specific_options <- option_space %>%
     purrr::map(purrr::pluck, "SpecificOptions") %>%
     purrr::map(dplyr::bind_rows) %>%
-    purrr::set_names(seq_along(.)) %>%
+    purrr::set_names(seq_along(.data)) %>%
     dplyr::bind_rows(.id = "id") %>%
-    dplyr::mutate(dplyr::across(id, as.integer))
+    dplyr::mutate(dplyr::across(.data$id, as.integer))
 
   expiry_dates <- option_space %>%
     purrr::map_dfr(`[`, c("Expiry", "DisplayDaysToLastTradeDate", "DisplayDaysToExpiry", "LastTradeDate")) %>%
     tibble::rowid_to_column("id") %>%
-    dplyr::mutate(dplyr::across(LastTradeDate, lubridate::as_datetime))
+    dplyr::mutate(dplyr::across(.data$LastTradeDate, lubridate::as_datetime))
 
   option_df <- specific_options %>%
     dplyr::left_join(expiry_dates, by = "id")
