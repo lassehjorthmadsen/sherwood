@@ -36,7 +36,10 @@ specific_options <-
   )
 
 # 4. Set up price subscription for example option
-example_option_uic <- specific_options$Uic[1]
+example_option_uic <- specific_options %>%
+  filter(TradingStatus == "Tradable", PutCall == "Call") %>%
+  slice_head(n = 1) %>%
+  pull(Uic)
 
 prices <-
   make_subscription(
@@ -49,11 +52,23 @@ prices <-
 option <- specific_options %>%
   inner_join(prices, by = c("Uic" = "Snapshot.Uic"))
 
-option %>% glimpse()
+stock <- get_info_prices(token = my_token, live = TRUE, uics = option$UnderlyingUic)
 
+option <- option %>% left_join(stock, by = c("Uic" = "Data.Uic"))
 
-
-
+option %>% select(
+  Uic,
+  UnderlyingUic,
+  PutCall,
+  StrikePrice,
+  Expiry,
+  Snapshot.AssetType,
+  Snapshot.Commissions.CostBuy,
+  Snapshot.PriceInfoDetails.Open,
+  Snapshot.PriceInfoDetails.Volume,
+  Snapshot.PriceInfoDetails.Open
+  ) %>%
+  glimpse()
 
 
 # 6. Use optionschain endpoint

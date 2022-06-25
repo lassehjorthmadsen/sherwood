@@ -507,7 +507,7 @@ get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
       )
 
     r <- httr::GET(url = url,
-                   query = list(ClientKey = client_key, OptionSpaceSegment = "DefaultDates"),
+                   query = list(ClientKey = client_key, OptionSpaceSegment = "AllDates"),
                    config = token
                    )
 
@@ -519,7 +519,7 @@ get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
       )
 
     r <- httr::GET(url = url,
-                   query = list(ClientKey = client_key, OptionSpaceSegment = "DefaultDates",
+                   query = list(ClientKey = client_key, OptionSpaceSegment = "AllDates",
                                 config = httr::add_headers(Authorization = token)
                                 )
                    )
@@ -527,16 +527,27 @@ get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
 
   httr::stop_for_status(r)
 
-  specific_options <- r %>%
+  option_space <- r %>%
     httr::content() %>%
-    purrr::pluck("OptionSpace") %>%
+    purrr::pluck("OptionSpace")
+
+  specific_options <- option_space %>%
     purrr::map(purrr::pluck, "SpecificOptions") %>%
-    dplyr::bind_rows() %>%
-    dplyr::filter(.data$PutCall == "Call", .data$TradingStatus == "Tradable")
+    purrr::map(dplyr::bind_rows) %>%
+    purrr::set_names(seq_along(.)) %>%
+    dplyr::bind_rows(.id = "id") %>%
+    dplyr::mutate(dplyr::across(id, as.integer))
 
-  specific_options
-}
+  expiry_dates <- option_space %>%
+    purrr::map_dfr(`[`, c("Expiry", "DisplayDaysToLastTradeDate", "DisplayDaysToExpiry", "LastTradeDate")) %>%
+    tibble::rowid_to_column("id") %>%
+    dplyr::mutate(dplyr::across(LastTradeDate, lubridate::as_datetime))
 
+  option_df <- specific_options %>%
+    dplyr::left_join(expiry_dates, by = "id")
+
+  option_df
+  }
 
 #' Create a price subscription on an instrument
 #'
