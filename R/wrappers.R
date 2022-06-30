@@ -359,6 +359,7 @@ place_order <- function(token,
                         amount_type = "Quantity",
                         order_price = 1,
                         order_type = "Market",
+                        to_open_close = "ToOpen",
                         ...) {
 
   body <- list(
@@ -370,7 +371,8 @@ place_order <- function(token,
     "OrderPrice" = order_price,
     "OrderType" = order_type,
     "OrderRelation" = "StandAlone",
-    "ManualOrder" = TRUE
+    "ManualOrder" = TRUE,
+    "ToOpenClose" = to_open_close
   )
 
   if (live) {
@@ -453,7 +455,7 @@ cancel_order <- function(token, live = FALSE, account_key, order_ids) {
 
 
 #' Cancel all orders
-#' Call `get_orders()` and `cancel_order()` to cancel *all* orders for an account
+#' Calls `get_orders()` and `cancel_order()` to cancel *all* orders for an account
 #'
 #' @param token either a character or a token2.0 reference class (RC) object
 #' as returned by `httr::oauth2.0_token()`. Sim environment uses character,
@@ -468,12 +470,16 @@ cancel_order <- function(token, live = FALSE, account_key, order_ids) {
 #'
 cancel_all_orders <- function(token, live = FALSE, account_key, ...) {
 
-  order_ids <- get_orders(token = token, live = live) %>%
+  order_ids <- get_orders(token = token, live = live)
+
+  if (is.null(order_ids)) stop("No orders found")
+
+  ids <- order_ids %>%
     dplyr::select(dplyr::ends_with("OrderId")) %>%
     dplyr::pull(1) %>%
     paste(collapse = ",")
 
-  cancel_all <- cancel_order(token = token, live = live, account_key = account_key, order_ids = order_ids, ...)
+  cancel_all <- cancel_order(token = token, live = live, account_key = account_key, order_ids = ids, ...)
   cancel_all
 }
 
@@ -535,7 +541,7 @@ get_optionspace <- function(token, live = FALSE, client_key, option_root_id) {
   specific_options <- option_space %>%
     purrr::map(purrr::pluck, "SpecificOptions") %>%
     purrr::map(dplyr::bind_rows) %>%
-    purrr::set_names(seq_along(.data)) %>%
+    purrr::set_names(seq_along(.)) %>%
     dplyr::bind_rows(.id = "id") %>%
     dplyr::mutate(dplyr::across(.data$id, as.integer))
 

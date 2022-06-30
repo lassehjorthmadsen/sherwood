@@ -21,14 +21,15 @@ infop <- get_info_prices(token = my_token, live = TRUE, uics = uics)
 infop_sim <- get_info_prices(token = token24, live = FALSE, uics = uics)
 
 # Buy a cheap stock
-infop_sim %>%
+infop %>%
   arrange(Data.Quote.Mid) %>%
   select(Data.DisplayAndFormat.Description,
          Data.DisplayAndFormat.Symbol,
          Data.AssetType,
          Data.Uic,
          Data.Quote.Mid,
-         Data.Quote.MarketState)
+         Data.Quote.MarketState) %>%
+  view("infop")
 
 place_order(
   token = my_token,
@@ -37,7 +38,7 @@ place_order(
   buy_sell = "Buy",
   asset_type = "Stock",
   order_type = "Limit",
-  order_price = 0.4
+  order_price = 0.2
 )
 
 # Show orders, selected fields
@@ -52,7 +53,7 @@ my_orders <- get_orders(token = my_token, live = TRUE) %>%
     Exchange = Data.Exchange.Description
   )
 
-my_orders
+my_orders %>% view("my_orders")
 
 # Cancel latest order
 latest_id <- my_orders %>% slice_max(OrderTime) %>% pull(OrderId)
