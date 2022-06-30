@@ -9,6 +9,9 @@ my_token <- authorize_live()
 # My info
 my_info <- get_client_info(token = my_token, live = TRUE)
 
+# My balance
+get_balance(token = my_token, live = TRUE)
+
 # My default key
 account_key <- my_info$DefaultAccountKey[1]
 
@@ -18,7 +21,6 @@ stocks <- get_instruments(token = my_token, live = TRUE, exchange_id = "CSE", as
 # Info prices
 uics = stocks$Data.Identifier %>% paste(collapse = ",")
 infop <- get_info_prices(token = my_token, live = TRUE, uics = uics)
-infop_sim <- get_info_prices(token = token24, live = FALSE, uics = uics)
 
 # Buy a cheap stock
 infop %>%

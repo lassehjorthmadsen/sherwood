@@ -2,8 +2,8 @@ To-do
 
 Use API to get stock option prices -- OK
 Automate authentication for live env -- OK
-Buy stock options on simulation environment -- not possible?
-Sell stock options on simulation environment -- not possible?
+Buy stock options on simulation environment -- OK
+Sell stock options on simulation environment
 Buy a real stock on live environment  -- OK (cancelled, though)
 
 Next:
@@ -11,13 +11,12 @@ Next:
 ** Collect data set on stock option prices and expiration value: We want to compare theoretical Black Scholes-prices with actual prices AND value at expiration
 
 ** Calculate Black Scholes-like fair prices
-** Analyze data: What is the return if you just buy all available options?
+** Analyze data: What is the return if you just buy all available options? Try this on sim environment
 
 Get an algo to run on simulation environment
 
 Figure out:
-- We get info prices only for very few options. Why?
-- Understand option space
+- Understand option space -- roughly OK
 - Try optionchain endpoint
 
 Reset Simulation Account

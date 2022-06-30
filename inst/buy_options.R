@@ -29,6 +29,7 @@ opt <- get_instruments(token = my_token, live = TRUE, exchange_id = "EUREX", ass
 
 # 2. Identifier field will contain Option Root ID (collection of related options). E.g.:
 root_id <- opt %>% filter(str_detect(Data.Description, "Heidelberger Cement AG")) %>% pull(Data.Identifier)
+opt %>% filter(Data.Identifier == root_id) %>% glimpse()
 
 # 3. Use root id to get option space from contractoptionspaces end point. Try option root = 572 :
 specific_options <-
@@ -84,7 +85,6 @@ option %>% select(
   glimpse()
 
 # 6. Place order
-
 place_order(
   token = token24,
   live = FALSE,
@@ -107,9 +107,10 @@ cancel_order(token = token24, live = FALSE, account_key = latest_AccountKey, ord
 
 cancel_all_orders(token = token24, live = FALSE, account_key = account_key)
 
+
+
+
 # 6. Use optionschain endpoint
-
-
 body <- list(
   "Arguments" = list("AssetType" = "StockOption",
                      "Identifier" = root_id),
